@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
+import AdminSubmissionView from "./pages/admin/AdminSubmissionView";
+import AdminReviewSubmissions from "./pages/admin/AdminReviewSubmissions";
 
 // Dashboards
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -20,6 +22,16 @@ function App() {
 
         {/* Common User */}
         <Route path="/user/dashboard" element={<UserDashboard />} />
+
+        <Route
+          path="/admin/submissions/:id"
+          element={<AdminSubmissionView />}
+        />
+
+        <Route
+  path="/admin/submissions/:id/review"
+  element={<AdminSubmissionReview />}
+/>
       </Routes>
     </Router>
   );

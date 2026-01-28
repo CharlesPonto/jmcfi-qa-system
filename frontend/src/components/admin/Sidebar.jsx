@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
-import logo from "../../assets/jmcfi-logo.png"; 
+import logo from "../../assets/jmcfi-logo.png";
+
 const Sidebar = () => {
   return (
-    <aside className="w-64 min-h-screen bg-gradient-to-b from-[#6A003A] to-[#4B0028] text-white flex flex-col">
+    <aside className="fixed top-0 left-0 w-64 h-screen bg-gradient-to-b from-[#6A003A] to-[#4B0028] text-white flex flex-col z-50">
       
       {/* LOGO */}
-      <div className="flex items-center justify-center py-6 border-b border-white/20">
+      <div className="flex items-center justify-center py-6 border-b border-white/20 flex-shrink-0">
         <img
           src={logo}
           alt="Jose Maria College"
@@ -13,10 +14,9 @@ const Sidebar = () => {
         />
       </div>
 
-      {/* MENU */}
-      <nav className="flex-1 px-4 py-6 space-y-6 text-sm">
-
-        {/* PAGES */}
+      {/* SCROLLABLE MENU */}
+      <nav className="flex-1 px-4 py-6 space-y-6 text-sm overflow-y-auto">
+        
         <div>
           <p className="text-xs text-white/60 mb-2">PAGES</p>
           <NavItem to="/admin/dashboard" label="Dashboard" />
@@ -24,7 +24,6 @@ const Sidebar = () => {
           <NavItem to="/admin/users" label="User Management" />
         </div>
 
-        {/* ACCREDITATION LEVELS */}
         <div>
           <p className="text-xs text-white/60 mb-2">ACCREDITATION LEVELS</p>
           <NavItem to="/admin/accreditation/level/1" label="Level 1" />
@@ -32,7 +31,6 @@ const Sidebar = () => {
           <NavItem to="/admin/accreditation/level/3" label="Level 3" />
         </div>
 
-        {/* COMPILED DOCUMENTS */}
         <div>
           <p className="text-xs text-white/60 mb-2">COMPILED DOCUMENTS</p>
           <NavItem to="/admin/external-review" label="External Review" />
@@ -40,8 +38,8 @@ const Sidebar = () => {
         </div>
       </nav>
 
-      {/* SETTINGS */}
-      <div className="px-4 py-4 border-t border-white/20">
+      {/* SETTINGS (ALWAYS VISIBLE) */}
+      <div className="px-4 py-4 border-t border-white/20 flex-shrink-0">
         <NavItem to="/admin/settings" label="Settings" />
       </div>
     </aside>

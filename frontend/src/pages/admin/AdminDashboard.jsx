@@ -6,26 +6,47 @@ import SubmissionTable from "../../components/admin/SubmissionTable";
 
 const AdminDashboard = () => {
   return (
-    <div className="flex bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen">
       <Sidebar />
 
-      <div className="flex-1">
+      <div className="ml-64 flex flex-col min-h-screen">
         <Topbar />
 
-        <main className="p-6 space-y-6">
+        <main className="p-6 space-y-6 overflow-y-auto">
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <StatCard title="Submitted Documents" value="12" />
-            <StatCard title="Pending Reviews" value="5" />
-            <StatCard title="Complied" value="8" />
-            <StatCard title="Non-Compliant" value="3" />
+            <StatCard
+              title="Submitted Documents"
+              value="12"
+              type="submitted"
+              viewPath="/admin/review-submissions"
+            />
+            <StatCard
+              title="Pending Reviews"
+              value="5"
+              type="pending"
+              viewPath="/admin/review-submissions"
+            />
+            <StatCard
+              title="Complied"
+              value="8"
+              type="complied"
+              viewPath="/admin/review-submissions"
+            />
+            <StatCard
+              title="Non-Compliant"
+              value="3"
+              type="noncompliant"
+              viewPath="/admin/review-submissions"
+            />
           </div>
 
           {/* Progress */}
-          <div className="bg-white rounded-xl shadow p-6">
-            <h3 className="text-lg font-semibold mb-4">
+          <div className="bg-white rounded-xl shadow p-6 border-l-4 border-[#6A003A]">
+            <h3 className="text-lg font-semibold text-[#6A003A] mb-4">
               Accreditation Progress
             </h3>
+
             <ProgressBar label="Level 1" value={80} />
             <ProgressBar label="Level 2" value={50} />
             <ProgressBar label="Level 3" value={20} />
