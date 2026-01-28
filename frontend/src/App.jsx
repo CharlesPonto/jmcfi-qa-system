@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import AdminSubmissionView from "./pages/admin/AdminSubmissionView";
 import AdminReviewSubmissions from "./pages/admin/AdminReviewSubmissions";
+import AdminSubmissionReview from "./pages/admin/AdminSubmissionReview";
 
 // Dashboards
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -29,9 +30,14 @@ function App() {
         />
 
         <Route
-  path="/admin/submissions/:id/review"
-  element={<AdminSubmissionReview />}
-/>
+          path="/admin/review-submissions"
+          element={<AdminReviewSubmissions />}
+        />
+
+        <Route
+          path="/admin/submissions/:id/review"
+          element={<AdminSubmissionReview />}
+        />
       </Routes>
     </Router>
   );

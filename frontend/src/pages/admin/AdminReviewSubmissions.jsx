@@ -1,7 +1,7 @@
-import Sidebar from "../../components/admin/Sidebar";
-import Topbar from "../../components/admin/Topbar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Sidebar from "../../components/admin/Sidebar";
+import Topbar from "../../components/admin/Topbar";
 
 const AdminReviewSubmissions = () => {
   const navigate = useNavigate();
@@ -39,6 +39,7 @@ const AdminReviewSubmissions = () => {
   const [levelFilter, setLevelFilter] = useState("All");
   const [search, setSearch] = useState("");
 
+  // FILTER LOGIC
   const filteredSubmissions = submissions.filter((item) => {
     const statusMatch =
       statusFilter === "All" || item.status === statusFilter;
@@ -51,6 +52,7 @@ const AdminReviewSubmissions = () => {
     return statusMatch && levelMatch && searchMatch;
   });
 
+  // STATUS COLOR
   const getStatusColor = (status) => {
     if (status === "Complied") return "text-green-600";
     if (status === "Pending") return "text-yellow-600";
@@ -62,7 +64,7 @@ const AdminReviewSubmissions = () => {
       {/* FIXED SIDEBAR */}
       <Sidebar />
 
-      {/* MAIN CONTENT */}
+      {/* MAIN CONTENT (OFFSET FOR SIDEBAR) */}
       <div className="ml-64 flex flex-col min-h-screen">
         <Topbar />
 
@@ -81,6 +83,7 @@ const AdminReviewSubmissions = () => {
               </h3>
 
               <div className="flex flex-col sm:flex-row gap-3">
+                {/* SEARCH */}
                 <input
                   type="text"
                   placeholder="Search program or department"
@@ -89,6 +92,7 @@ const AdminReviewSubmissions = () => {
                   className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#6A003A]"
                 />
 
+                {/* STATUS FILTER */}
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
@@ -100,6 +104,7 @@ const AdminReviewSubmissions = () => {
                   <option value="Non-Compliant">Non-Compliant</option>
                 </select>
 
+                {/* LEVEL FILTER */}
                 <select
                   value={levelFilter}
                   onChange={(e) => setLevelFilter(e.target.value)}
@@ -126,6 +131,7 @@ const AdminReviewSubmissions = () => {
                     <th className="pb-2">Action</th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {filteredSubmissions.length > 0 ? (
                     filteredSubmissions.map((item) => (
@@ -144,12 +150,16 @@ const AdminReviewSubmissions = () => {
                         >
                           {item.status}
                         </td>
+
+                        {/* ✅ ACTION COLUMN – REVIEW BUTTON */}
                         <td>
                           <button
                             onClick={() =>
-                              navigate(`/admin/submissions/${item.id}`)
+                              navigate(
+                                `/admin/submissions/${item.id}/review`
+                              )
                             }
-                            className="text-[#6A003A] hover:underline"
+                            className="text-[#6A003A] hover:underline font-medium"
                           >
                             Review
                           </button>
