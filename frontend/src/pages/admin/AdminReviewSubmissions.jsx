@@ -4,181 +4,200 @@ import Sidebar from "../../components/admin/Sidebar";
 import Topbar from "../../components/admin/Topbar";
 
 const AdminReviewSubmissions = () => {
+  const [activeTab, setActiveTab] = useState("Submissions");
+  const [selectedProgram, setSelectedProgram] = useState(
+    "BS in Information Technology"
+  );
+
   const navigate = useNavigate();
 
-  // MOCK DATA (PROTOTYPE)
-  const submissions = [
+  /* =========================
+     EXPANDED MOCK SUBMISSIONS DATA
+     ========================= */
+  const allSubmissions = [
+    /* ---------- LEVEL 1 ---------- */
     {
       id: 1,
-      department: "CITE",
-      program: "BSIT",
       level: "Level 1",
+      title: "Facilities Compliance",
+      program: "BS in Information Technology",
       status: "Pending",
-      date: "Nov 12, 2025",
     },
     {
       id: 2,
-      department: "COBE",
-      program: "BSA",
       level: "Level 1",
+      title: "Faculty Profile",
+      program: "BS in Information Technology",
       status: "Complied",
-      date: "Nov 10, 2025",
     },
     {
       id: 3,
-      department: "CITE",
-      program: "BSCS",
+      level: "Level 1",
+      title: "Curriculum Design",
+      program: "BS in Information Technology",
+      status: "Pending",
+    },
+    {
+      id: 4,
+      level: "Level 1",
+      title: "Student Admission Policies",
+      program: "BS in Information Technology",
+      status: "Needs Revision",
+    },
+
+    /* ---------- LEVEL 2 ---------- */
+    {
+      id: 5,
       level: "Level 2",
-      status: "Non-Compliant",
-      date: "Nov 08, 2025",
+      title: "Research Outputs",
+      program: "BS in Information Technology",
+      status: "Non-Complied",
+    },
+    {
+      id: 6,
+      level: "Level 2",
+      title: "Extension Programs",
+      program: "BS in Information Technology",
+      status: "Pending",
+    },
+    {
+      id: 7,
+      level: "Level 2",
+      title: "Faculty Research Publications",
+      program: "BS in Information Technology",
+      status: "Complied",
+    },
+    {
+      id: 8,
+      level: "Level 2",
+      title: "Community Engagement Activities",
+      program: "BS in Information Technology",
+      status: "Needs Revision",
+    },
+
+    /* ---------- LEVEL 3 ---------- */
+    {
+      id: 9,
+      level: "Level 3",
+      title: "Library Resources",
+      program: "BS in Information Technology",
+      status: "Needs Revision",
+    },
+    {
+      id: 10,
+      level: "Level 3",
+      title: "Laboratory Utilization",
+      program: "BS in Information Technology",
+      status: "Pending",
+    },
+    {
+      id: 11,
+      level: "Level 3",
+      title: "Industry Linkages",
+      program: "BS in Information Technology",
+      status: "Complied",
+    },
+    {
+      id: 12,
+      level: "Level 3",
+      title: "Quality Assurance Mechanisms",
+      program: "BS in Information Technology",
+      status: "Non-Complied",
     },
   ];
 
-  // FILTER STATES
-  const [statusFilter, setStatusFilter] = useState("All");
-  const [levelFilter, setLevelFilter] = useState("All");
-  const [search, setSearch] = useState("");
+  /* =========================
+     FILTER LOGIC BY TAB
+     ========================= */
+  const filteredSubmissions = allSubmissions.filter((item) => {
+    if (item.program !== selectedProgram) return false;
 
-  // FILTER LOGIC
-  const filteredSubmissions = submissions.filter((item) => {
-    const statusMatch =
-      statusFilter === "All" || item.status === statusFilter;
-    const levelMatch =
-      levelFilter === "All" || item.level === levelFilter;
-    const searchMatch =
-      item.program.toLowerCase().includes(search.toLowerCase()) ||
-      item.department.toLowerCase().includes(search.toLowerCase());
+    if (activeTab === "Submissions") return item.status === "Pending";
+    if (activeTab === "Complied") return item.status === "Complied";
+    if (activeTab === "Non-Complied") return item.status === "Non-Complied";
+    if (activeTab === "Done") return item.status !== "Pending";
 
-    return statusMatch && levelMatch && searchMatch;
+    return true;
   });
 
-  // STATUS COLOR
-  const getStatusColor = (status) => {
-    if (status === "Complied") return "text-green-600";
-    if (status === "Pending") return "text-yellow-600";
-    return "text-red-600";
-  };
+  /* =========================
+     GROUP BY LEVEL
+     ========================= */
+  const groupedByLevel = ["Level 1", "Level 2", "Level 3"].map(
+    (level) => ({
+      level,
+      items: filteredSubmissions.filter(
+        (item) => item.level === level
+      ),
+    })
+  );
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      {/* FIXED SIDEBAR */}
       <Sidebar />
 
-      {/* MAIN CONTENT (OFFSET FOR SIDEBAR) */}
       <div className="ml-64 flex flex-col min-h-screen">
         <Topbar />
 
         <main className="p-6 space-y-6 overflow-y-auto">
-          {/* PAGE TITLE */}
-          <h2 className="text-xl font-semibold text-[#6A003A]">
-            Review Submissions
-          </h2>
+          {/* HEADER */}
+          <div>
+            <h2 className="text-xl font-semibold text-[#6A003A]">
+              Review Submissions
+            </h2>
+            <p className="text-sm text-gray-500">
+              Review and manage accreditation submissions by level
+            </p>
+          </div>
 
-          {/* TABLE CARD */}
-          <div className="bg-white rounded-xl shadow p-6">
-            {/* HEADER + FILTERS */}
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
-              <h3 className="text-lg font-semibold text-gray-700">
-                Accreditation Submissions
-              </h3>
-
-              <div className="flex flex-col sm:flex-row gap-3">
-                {/* SEARCH */}
-                <input
-                  type="text"
-                  placeholder="Search program or department"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#6A003A]"
-                />
-
-                {/* STATUS FILTER */}
-                <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#6A003A]"
+          {/* TABS */}
+          <div className="flex gap-8 border-b text-sm">
+            {["Submissions", "Done", "Complied", "Non-Complied"].map(
+              (tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`pb-2 transition ${
+                    activeTab === tab
+                      ? "border-b-2 border-[#6A003A] text-[#6A003A] font-medium"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
                 >
-                  <option value="All">All Status</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Complied">Complied</option>
-                  <option value="Non-Compliant">Non-Compliant</option>
-                </select>
+                  {tab}
+                </button>
+              )
+            )}
+          </div>
 
-                {/* LEVEL FILTER */}
-                <select
-                  value={levelFilter}
-                  onChange={(e) => setLevelFilter(e.target.value)}
-                  className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#6A003A]"
-                >
-                  <option value="All">All Levels</option>
-                  <option value="Level 1">Level 1</option>
-                  <option value="Level 2">Level 2</option>
-                  <option value="Level 3">Level 3</option>
-                </select>
-              </div>
-            </div>
+          {/* PROGRAM FILTER */}
+          <div className="bg-white rounded-2xl shadow p-6">
+            <label className="block text-sm text-gray-500 mb-2">
+              Program
+            </label>
+            <select
+              value={selectedProgram}
+              onChange={(e) =>
+                setSelectedProgram(e.target.value)
+              }
+              className="border rounded-lg px-4 py-2 text-sm bg-gray-50 w-80"
+            >
+              <option>BS in Information Technology</option>
+              <option>BS in Business Administration</option>
+            </select>
+          </div>
 
-            {/* TABLE */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-left text-gray-500 border-b">
-                    <th className="pb-2">Department</th>
-                    <th className="pb-2">Program</th>
-                    <th className="pb-2">Level</th>
-                    <th className="pb-2">Date</th>
-                    <th className="pb-2">Status</th>
-                    <th className="pb-2">Action</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {filteredSubmissions.length > 0 ? (
-                    filteredSubmissions.map((item) => (
-                      <tr
-                        key={item.id}
-                        className="border-b hover:bg-gray-50"
-                      >
-                        <td className="py-2">{item.department}</td>
-                        <td>{item.program}</td>
-                        <td>{item.level}</td>
-                        <td>{item.date}</td>
-                        <td
-                          className={`font-medium ${getStatusColor(
-                            item.status
-                          )}`}
-                        >
-                          {item.status}
-                        </td>
-
-                        {/* ✅ ACTION COLUMN – REVIEW BUTTON */}
-                        <td>
-                          <button
-                            onClick={() =>
-                              navigate(
-                                `/admin/submissions/${item.id}/review`
-                              )
-                            }
-                            className="text-[#6A003A] hover:underline font-medium"
-                          >
-                            Review
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td
-                        colSpan="6"
-                        className="text-center py-6 text-gray-500"
-                      >
-                        No submissions found.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+          {/* LEVEL GROUPS */}
+          <div className="space-y-4">
+            {groupedByLevel.map(({ level, items }) => (
+              <LevelGroup
+                key={level}
+                level={level}
+                items={items}
+                onReview={(id) =>
+                  navigate(`/admin/submissions/${id}/review`)
+                }
+              />
+            ))}
           </div>
         </main>
       </div>
@@ -187,3 +206,94 @@ const AdminReviewSubmissions = () => {
 };
 
 export default AdminReviewSubmissions;
+
+/* =========================
+   LEVEL GROUP (ACCORDION)
+   ========================= */
+
+const LevelGroup = ({ level, items, onReview }) => {
+  const [open, setOpen] = useState(level === "Level 1");
+
+  return (
+    <div className="bg-white rounded-2xl shadow overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex justify-between items-center px-6 py-4 text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
+      >
+        <span>{level}</span>
+        <span className="text-xs">{open ? "▲" : "▼"}</span>
+      </button>
+
+      {open && (
+        <div className="px-6 pb-6 space-y-3">
+          {items.length === 0 ? (
+            <p className="text-sm text-gray-500">
+              No submissions available.
+            </p>
+          ) : (
+            items.map((item) => (
+              <div
+                key={item.id}
+                className={`flex justify-between items-center bg-gray-50 rounded-xl px-5 py-4 hover:bg-gray-100 transition border-l-4 ${getBorderColor(
+                  item.status
+                )}`}
+              >
+                <div>
+                  <p className="text-sm font-medium text-gray-700">
+                    {item.title}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {item.program}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <StatusBadge status={item.status} />
+                  <button
+                    onClick={() => onReview(item.id)}
+                    className="text-sm text-[#6A003A] hover:underline"
+                  >
+                    Review
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+/* =========================
+   STATUS BADGE
+   ========================= */
+
+const StatusBadge = ({ status }) => {
+  const styles = {
+    Pending: "bg-yellow-100 text-yellow-700",
+    Complied: "bg-green-100 text-green-700",
+    "Non-Complied": "bg-red-100 text-red-700",
+    "Needs Revision": "bg-orange-100 text-orange-700",
+  };
+
+  return (
+    <span
+      className={`px-3 py-1 rounded-full text-xs ${styles[status]}`}
+    >
+      {status}
+    </span>
+  );
+};
+
+/* =========================
+   LEFT BORDER COLOR HELPER
+   ========================= */
+
+const getBorderColor = (status) => {
+  if (status === "Pending") return "border-yellow-400";
+  if (status === "Complied") return "border-green-50q0";
+  if (status === "Non-Complied") return "border-red-500";
+  if (status === "Needs Revision") return "border-orange-500";
+  return "border-gray-300";
+};

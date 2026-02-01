@@ -2,7 +2,7 @@ import Sidebar from "../../components/admin/Sidebar";
 import Topbar from "../../components/admin/Topbar";
 import StatCard from "../../components/admin/StatCard";
 import ProgressBar from "../../components/admin/ProgressBar";
-import SubmissionTable from "../../components/admin/SubmissionTable";
+import ActivityLog from "../../components/admin/ActivityLog";
 
 const AdminDashboard = () => {
   return (
@@ -13,7 +13,7 @@ const AdminDashboard = () => {
         <Topbar />
 
         <main className="p-6 space-y-6 overflow-y-auto">
-          {/* Stats */}
+          {/* STATS */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <StatCard
               title="Submitted Documents"
@@ -41,7 +41,7 @@ const AdminDashboard = () => {
             />
           </div>
 
-          {/* Progress */}
+          {/* PROGRESS */}
           <div className="bg-white rounded-xl shadow p-6 border-l-4 border-[#6A003A]">
             <h3 className="text-lg font-semibold text-[#6A003A] mb-4">
               Accreditation Progress
@@ -52,8 +52,8 @@ const AdminDashboard = () => {
             <ProgressBar label="Level 3" value={20} />
           </div>
 
-          {/* Table */}
-          <SubmissionTable />
+          {/* ACTIVITY LOG */}
+          <ActivityLog />
         </main>
       </div>
     </div>

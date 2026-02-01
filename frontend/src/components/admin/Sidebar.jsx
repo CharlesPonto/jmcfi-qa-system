@@ -17,6 +17,7 @@ const Sidebar = () => {
       {/* SCROLLABLE MENU */}
       <nav className="flex-1 px-4 py-6 space-y-6 text-sm overflow-y-auto">
         
+        {/* PAGES */}
         <div>
           <p className="text-xs text-white/60 mb-2">PAGES</p>
           <NavItem to="/admin/dashboard" label="Dashboard" />
@@ -24,21 +25,23 @@ const Sidebar = () => {
           <NavItem to="/admin/users" label="User Management" />
         </div>
 
+        {/* ACCREDITATION LEVELS */}
         <div>
           <p className="text-xs text-white/60 mb-2">ACCREDITATION LEVELS</p>
           <NavItem to="/admin/accreditation/level/1" label="Level 1" />
           <NavItem to="/admin/accreditation/level/2" label="Level 2" />
           <NavItem to="/admin/accreditation/level/3" label="Level 3" />
+          <NavItem to="/admin/accreditation/level/4" label="Level 4" />
         </div>
 
+        {/* COMPILED DOCUMENTS */}
         <div>
           <p className="text-xs text-white/60 mb-2">COMPILED DOCUMENTS</p>
           <NavItem to="/admin/external-review" label="External Review" />
-          <NavItem to="/admin/external-revisions" label="External Revisions" />
         </div>
       </nav>
 
-      {/* SETTINGS (ALWAYS VISIBLE) */}
+      {/* SETTINGS */}
       <div className="px-4 py-4 border-t border-white/20 flex-shrink-0">
         <NavItem to="/admin/settings" label="Settings" />
       </div>
