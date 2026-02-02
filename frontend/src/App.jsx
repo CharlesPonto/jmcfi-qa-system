@@ -9,6 +9,7 @@ import AdminExternalReview from "./pages/admin/AdminExternalReview";
 import AdminLevel2 from "./pages/admin/AdminLevel2";
 import AdminLevel3 from "./pages/admin/AdminLevel3";
 import AdminLevel4 from "./pages/admin/AdminLevel4";
+import AdminSettings from "./pages/admin/AdminSettings";
 
 // Dashboards
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -63,6 +64,7 @@ function App() {
 
         <Route path="/admin/accreditation/level/3" element={<AdminLevel3 />} />
         <Route path="/admin/accreditation/level/4" element={<AdminLevel4 />} />
+        <Route path="/admin/settings" element={<AdminSettings />} />
       </Routes>
     </Router>
   );

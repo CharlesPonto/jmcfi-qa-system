@@ -5,220 +5,74 @@ import Topbar from "../../components/admin/Topbar";
 import LevelGroup from "../../components/admin/LevelGroup";
 
 const AdminReviewSubmissions = () => {
+  // Default program filter set to "All"
   const [activeTab, setActiveTab] = useState("Submissions");
-  const [selectedProgram, setSelectedProgram] = useState("BS in Information Technology");
+  const [selectedProgram, setSelectedProgram] = useState("All");
   const navigate = useNavigate();
 
-  const allSubmissions = [{
-
-      id: 1,
-
-      level: "Level 1",
-
-      title: "Facilities Compliance",
-
-      program: "BS in Information Technology",
-
-      status: "Pending",
-
-    },
-
-    {
-
-      id: 2,
-
-      level: "Level 1",
-
-      title: "Faculty Profile",
-
-      program: "BS in Information Technology",
-
-      status: "Complied",
-
-    },
-
-    {
-
-      id: 3,
-
-      level: "Level 1",
-
-      title: "Curriculum Design",
-
-      program: "BS in Information Technology",
-
-      status: "Pending",
-
-    },
-
-    {
-
-      id: 4,
-
-      level: "Level 1",
-
-      title: "Student Admission Policies",
-
-      program: "BS in Information Technology",
-
-      status: "Needs Revision",
-
-    },
-
-
+  const allSubmissions = [
+    /* ---------- LEVEL 1 ---------- */
+    { id: 1, level: "Level 1", title: "Facilities Compliance", program: "BS in Information Technology", status: "Pending" },
+    { id: 2, level: "Level 1", title: "Faculty Profile", program: "BS in Information Technology", status: "Complied" },
+    { id: 3, level: "Level 1", title: "Curriculum Design", program: "BS in Information Technology", status: "Pending" },
+    { id: 4, level: "Level 1", title: "Student Admission Policies", program: "BS in Information Technology", status: "Needs Revision" },
 
     /* ---------- LEVEL 2 ---------- */
-
-    {
-
-      id: 5,
-
-      level: "Level 2",
-
-      title: "Research Outputs",
-
-      program: "BS in Information Technology",
-
-      status: "Non-Complied",
-
-    },
-
-    {
-
-      id: 6,
-
-      level: "Level 2",
-
-      title: "Extension Programs",
-
-      program: "BS in Information Technology",
-
-      status: "Pending",
-
-    },
-
-    {
-
-      id: 7,
-
-      level: "Level 2",
-
-      title: "Faculty Research Publications",
-
-      program: "BS in Information Technology",
-
-      status: "Complied",
-
-    },
-
-    {
-
-      id: 8,
-
-      level: "Level 2",
-
-      title: "Community Engagement Activities",
-
-      program: "BS in Information Technology",
-
-      status: "Needs Revision",
-
-    },
-
-
+    { id: 5, level: "Level 2", title: "Research Outputs", program: "BS in Information Technology", status: "Non-Complied" },
+    { id: 6, level: "Level 2", title: "Extension Programs", program: "BS in Information Technology", status: "Pending" },
+    { id: 7, level: "Level 2", title: "Faculty Research Publications", program: "BS in Information Technology", status: "Complied" },
+    { id: 8, level: "Level 2", title: "Community Engagement Activities", program: "BS in Information Technology", status: "Needs Revision" },
 
     /* ---------- LEVEL 3 ---------- */
-
-    {
-
-      id: 9,
-
-      level: "Level 3",
-
-      title: "Library Resources",
-
-      program: "BS in Information Technology",
-
-      status: "Needs Revision",
-
-    },
-
-    {
-
-      id: 10,
-
-      level: "Level 3",
-
-      title: "Laboratory Utilization",
-
-      program: "BS in Information Technology",
-
-      status: "Pending",
-
-    },
-
-    {
-
-      id: 11,
-
-      level: "Level 3",
-
-      title: "Industry Linkages",
-
-      program: "BS in Information Technology",
-
-      status: "Complied",
-
-    },
-
-    {
-
-      id: 12,
-
-      level: "Level 3",
-
-      title: "Quality Assurance Mechanisms",
-
-      program: "BS in Information Technology",
-
-      status: "Non-Complied",
-
-    },];
+    { id: 9, level: "Level 3", title: "Library Resources", program: "BS in Information Technology", status: "Needs Revision" },
+    { id: 10, level: "Level 3", title: "Laboratory Utilization", program: "BS in Information Technology", status: "Pending" },
+    { id: 11, level: "Level 3", title: "Industry Linkages", program: "BS in Information Technology", status: "Complied" },
+    { id: 12, level: "Level 3", title: "Quality Assurance Mechanisms", program: "BS in Information Technology", status: "Non-Complied" },
+    
+    // Example of another program to test "All" filter
+    { id: 13, level: "Level 1", title: "Strategic Plan", program: "BS in Business Administration", status: "Pending" },
+  ];
 
   const filteredSubmissions = allSubmissions.filter((item) => {
-    if (item.program !== selectedProgram) return false;
-    if (activeTab === "Submissions") return item.status === "Pending";
-    if (activeTab === "Complied") return item.status === "Complied";
-    if (activeTab === "Non-Complied") return item.status === "Non-Complied";
-    if (activeTab === "Done") return item.status !== "Pending";
-    return true;
+    // Program Filter Logic
+    const programMatch = selectedProgram === "All" || item.program === selectedProgram;
+    
+    // Tab Filter Logic
+    let tabMatch = true;
+    if (activeTab === "Submissions") tabMatch = item.status === "Pending";
+    else if (activeTab === "Complied") tabMatch = item.status === "Complied";
+    else if (activeTab === "Non-Complied") tabMatch = item.status === "Non-Complied";
+    else if (activeTab === "Done") tabMatch = item.status !== "Pending";
+
+    return programMatch && tabMatch;
   });
 
   const levels = ["Level 1", "Level 2", "Level 3"];
 
   return (
-    <div className="bg-slate-50 min-h-screen flex">
+    <div className="bg-slate-50 min-h-screen flex font-sans antialiased text-left">
       <Sidebar />
       <div className="flex-1 ml-64 flex flex-col min-h-screen">
         <Topbar />
         
-        <main className="p-8 space-y-8">
-          {/* PAGE HEADER */}
+        <main className="p-8 space-y-6">
+          {/* HEADER SECTION */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-bold text-gray-800">Review Submissions</h2>
-              <p className="text-sm text-gray-500">Manage and validate accreditation requirements</p>
+              <h2 className="text-2xl font-bold text-gray-800 tracking-tight">Review Submissions</h2>
+              <p className="text-sm text-gray-500 font-medium">Manage and validate accreditation requirements</p>
             </div>
             
-            <div className="flex items-center gap-3 bg-white p-1.5 rounded-xl shadow-sm border border-gray-100">
+            {/* TAB NAVIGATION */}
+            <div className="flex items-center gap-1 bg-white p-1 rounded-xl shadow-sm border border-gray-100 h-fit">
               {["Submissions", "Done", "Complied", "Non-Complied"].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${
+                  className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all ${
                     activeTab === tab 
-                      ? "bg-[#6A003A] text-white shadow-md" 
-                      : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
+                      ? "bg-[#6A003A] text-white shadow-lg shadow-[#6A003A]/20" 
+                      : "text-gray-400 hover:text-gray-600"
                   }`}
                 >
                   {tab}
@@ -227,34 +81,39 @@ const AdminReviewSubmissions = () => {
             </div>
           </div>
 
-          {/* FILTERS */}
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
-            <div className="shrink-0 w-10 h-10 rounded-full bg-magenta-50 flex items-center justify-center text-[#6A003A]">
-               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-            </div>
-            <div className="flex-1">
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Filter by Program</label>
+          {/* SINGLE PROGRAM FILTER */}
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <div className="max-w-md">
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Filter by Program</label>
               <select
                 value={selectedProgram}
                 onChange={(e) => setSelectedProgram(e.target.value)}
-                className="w-full md:w-80 bg-gray-50 border-none rounded-lg px-4 py-2 text-sm font-medium focus:ring-2 focus:ring-[#6A003A]/20 outline-none"
+                className="w-full bg-slate-50 border border-transparent rounded-xl px-4 py-2.5 text-xs font-semibold text-gray-700 focus:bg-white focus:ring-2 focus:ring-[#6A003A]/10 outline-none transition-all cursor-pointer"
               >
+                <option value="All">All Programs</option>
                 <option>BS in Information Technology</option>
                 <option>BS in Business Administration</option>
+                <option>BS in Computer Engineering</option>
               </select>
             </div>
           </div>
 
           {/* LEVEL GROUPS */}
-          <div className="space-y-6">
-            {levels.map((level) => (
-              <LevelGroup
-                key={level}
-                level={level}
-                items={filteredSubmissions.filter(i => i.level === level)}
-                onReview={(id) => navigate(`/admin/submissions/${id}/review`)}
-              />
-            ))}
+          <div className="space-y-8">
+            {levels.map((level) => {
+              const itemsInLevel = filteredSubmissions.filter(i => i.level === level);
+              // Only render the group if there are items to show
+              if (itemsInLevel.length === 0) return null;
+              
+              return (
+                <LevelGroup
+                  key={level}
+                  level={level}
+                  items={itemsInLevel}
+                  onReview={(id) => navigate(`/admin/submissions/${id}/review`)}
+                />
+              );
+            })}
           </div>
         </main>
       </div>
