@@ -1,296 +1,61 @@
 import { useState } from "react";
 import Sidebar from "../../components/admin/Sidebar";
 import Topbar from "../../components/admin/Topbar";
+import Guidelines from "../../components/admin/Level2/Guidelines"; // Organized in a subfolder
+import Submissions from "../../components/admin/Level2/Submissions";
+import Complied from "../../components/admin/Level2/Complied";
+import MaterialViewer from "../../components/admin/MaterialViewer";
 
 const AdminLevel2 = () => {
   const [activeTab, setActiveTab] = useState("guidelines");
   const [selectedMaterial, setSelectedMaterial] = useState(null);
 
-  /* =========================
-     LEVEL 2 MATERIALS
-     ========================= */
   const materials = [
-    {
-      id: 1,
-      title: "Level 2 Accreditation Framework",
-      description:
-        "Overview of outcome-based accreditation requirements for Level 2.",
-      date: "Dec 3, 2025",
-      files: [{ name: "Level2-Framework.pdf", url: "#" }],
-    },
-    {
-      id: 2,
-      title: "Research & Extension Guidelines",
-      description:
-        "Guidelines for documenting research outputs and extension programs.",
-      date: "Dec 3, 2025",
-      files: [{ name: "Research-Extension-Guidelines.pdf", url: "#" }],
-    },
-    {
-      id: 3,
-      title: "Performance Indicators Template",
-      description:
-        "Template for reporting learning outcomes and program performance indicators.",
-      date: "Dec 3, 2025",
-      files: [{ name: "Performance-Indicators.xlsx", url: "#" }],
-    },
+    { id: 1, title: "Level 2 Accreditation Framework", description: "Outcome-based accreditation requirements.", date: "Dec 3", files: [{ name: "Level2-Framework.pdf", url: "#" }] },
+    { id: 2, title: "Research & Extension Guidelines", description: "Guidelines for documenting research outputs.", date: "Dec 3", files: [{ name: "Research-Guidelines.pdf", url: "#" }] },
+    { id: 3, title: "Performance Indicators Template", description: "Template for reporting learning outcomes.", date: "Dec 3", files: [{ name: "Indicators.xlsx", url: "#" }] },
   ];
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-slate-50 min-h-screen flex">
       <Sidebar />
-
-      <div className="ml-64 flex flex-col min-h-screen">
+      <div className="flex-1 ml-64 flex flex-col min-h-screen">
         <Topbar />
-
-        <main className="p-6 space-y-6 overflow-y-auto">
+        <main className="p-8 space-y-8">
           {/* HEADER */}
-          <div>
-            <h2 className="text-xl font-semibold text-[#6A003A]">
-              Level 2
-            </h2>
-            <p className="text-sm text-gray-500">
-              Outcome-Based Program Accreditation
-            </p>
+          <div className="flex justify-between items-end">
+            <div>
+              <h2 className="text-3xl font-extrabold text-gray-800 tracking-tight">Level 2</h2>
+              <p className="text-sm text-gray-500 font-medium">Outcome-Based Program Accreditation</p>
+            </div>
+            <div className="flex bg-white p-1 rounded-xl shadow-sm border border-gray-100">
+              {["guidelines", "submissions", "complied"].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${
+                    activeTab === tab ? "bg-[#6A003A] text-white shadow-md" : "text-gray-400 hover:text-gray-600"
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* TABS */}
-          <div className="flex gap-8 border-b text-sm">
-            {["guidelines", "submissions", "complied"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`pb-2 capitalize ${
-                  activeTab === tab
-                    ? "border-b-2 border-[#6A003A] text-[#6A003A] font-medium"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
+          <div className="animate-in fade-in duration-500">
+            {activeTab === "guidelines" && <Guidelines materials={materials} onSelect={setSelectedMaterial} />}
+            {activeTab === "submissions" && <Submissions />}
+            {activeTab === "complied" && <Complied />}
           </div>
-
-          {/* CONTENT */}
-          {activeTab === "guidelines" && (
-            <Guidelines
-              materials={materials}
-              onSelect={setSelectedMaterial}
-            />
-          )}
-          {activeTab === "submissions" && <Submissions />}
-          {activeTab === "complied" && <Complied />}
         </main>
       </div>
 
-      {/* MATERIAL VIEWER */}
       {selectedMaterial && (
-        <MaterialViewer
-          material={selectedMaterial}
-          onClose={() => setSelectedMaterial(null)}
-        />
+        <MaterialViewer material={selectedMaterial} onClose={() => setSelectedMaterial(null)} />
       )}
     </div>
   );
 };
 
 export default AdminLevel2;
-
-/* =========================
-   GUIDELINES TAB
-   ========================= */
-
-const Guidelines = ({ materials, onSelect }) => (
-  <div className="space-y-6">
-    {/* LEVEL BANNER */}
-    <div className="bg-[#6A003A] text-white rounded-xl p-6">
-      <h3 className="text-2xl font-semibold">LEVEL 2</h3>
-      <p className="text-sm mt-1">
-        Submit outcome-based evidence, research outputs, and performance indicators.
-      </p>
-    </div>
-
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {/* FOCUS AREAS */}
-      <div className="bg-white rounded-xl shadow p-6">
-        <h4 className="font-semibold text-gray-700 mb-2">
-          Focus Areas
-        </h4>
-        <ul className="text-sm text-gray-500 list-disc list-inside space-y-1">
-          <li>Learning Outcomes</li>
-          <li>Research Outputs</li>
-          <li>Extension Programs</li>
-          <li>Faculty & Student Performance</li>
-        </ul>
-      </div>
-
-      {/* MATERIALS */}
-      <div className="md:col-span-2 bg-white rounded-xl shadow p-6 space-y-4">
-        <h4 className="font-semibold text-gray-700">
-          Reference Materials
-        </h4>
-
-        {materials.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => onSelect(item)}
-            className="w-full text-left bg-gray-100 rounded-lg p-4 hover:bg-gray-200 transition border-l-4 border-[#6A003A]"
-          >
-            <p className="text-sm font-medium text-gray-700">
-              Admin posted a material: {item.title}
-            </p>
-            <p className="text-xs text-gray-500">
-              {item.date}
-            </p>
-          </button>
-        ))}
-      </div>
-    </div>
-  </div>
-);
-
-/* =========================
-   MATERIAL VIEWER
-   ========================= */
-
-const MaterialViewer = ({ material, onClose }) => (
-  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-    <div className="bg-white rounded-xl shadow-lg w-full max-w-lg p-6 space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold text-gray-700">
-          {material.title}
-        </h3>
-        <button onClick={onClose} className="text-gray-500">
-          ✕
-        </button>
-      </div>
-
-      <p className="text-sm text-gray-600">
-        {material.description}
-      </p>
-
-      <ul className="space-y-2">
-        {material.files.map((file, index) => (
-          <li
-            key={index}
-            className="flex justify-between items-center border rounded-md p-3 text-sm"
-          >
-            <span>{file.name}</span>
-            <div className="flex gap-3">
-              <a href={file.url} className="text-[#6A003A] hover:underline">
-                View
-              </a>
-              <a href={file.url} download className="text-gray-600 hover:underline">
-                Download
-              </a>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </div>
-);
-
-/* =========================
-   SUBMISSIONS TAB
-   ========================= */
-
-const Submissions = () => {
-  const submissions = [
-    { id: 1, title: "Program Learning Outcomes.pdf", status: "Pending" },
-    { id: 2, title: "Research Outputs Summary.pdf", status: "Needs Revision" },
-    { id: 3, title: "Extension Program Report.pdf", status: "Complied" },
-  ];
-
-  const count = (status) =>
-    submissions.filter((s) => s.status === status).length;
-
-  return (
-    <div className="bg-white rounded-xl shadow p-6 space-y-6">
-      {/* STATUS SUMMARY */}
-      <div className="flex gap-8 text-sm text-gray-600">
-        <StatusItem label="Submitted" value={submissions.length} />
-        <StatusItem label="Pending" value={count("Pending")} />
-        <StatusItem label="Needs Revision" value={count("Needs Revision")} />
-        <StatusItem label="Complied" value={count("Complied")} />
-      </div>
-
-      {submissions.map((item) => (
-        <div
-          key={item.id}
-          className={`flex justify-between items-center bg-gray-50 border-l-4 rounded-lg px-4 py-3 ${
-            item.status === "Pending"
-              ? "border-yellow-400"
-              : item.status === "Needs Revision"
-              ? "border-orange-400"
-              : "border-green-500"
-          }`}
-        >
-          <p className="text-sm font-medium text-gray-700">
-            {item.title}
-          </p>
-          <span className={`px-3 py-1 rounded-full text-xs ${
-            item.status === "Pending"
-              ? "bg-yellow-100 text-yellow-700"
-              : item.status === "Needs Revision"
-              ? "bg-orange-100 text-orange-700"
-              : "bg-green-100 text-green-700"
-          }`}>
-            {item.status}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-/* =========================
-   COMPLIED TAB
-   ========================= */
-
-const Complied = () => {
-  const complied = [
-    {
-      id: 1,
-      title: "Approved Research Outputs.pdf",
-      approvedBy: "QA Office",
-      date: "Dec 18, 2025",
-    },
-  ];
-
-  return (
-    <div className="bg-white rounded-xl shadow p-6 space-y-4">
-      {complied.map((item) => (
-        <div
-          key={item.id}
-          className="flex justify-between items-center bg-green-50 border-l-4 border-green-600 rounded-lg px-4 py-3"
-        >
-          <div>
-            <p className="text-sm font-medium text-gray-700">
-              {item.title}
-            </p>
-            <p className="text-xs text-gray-500">
-              Approved by {item.approvedBy}
-            </p>
-          </div>
-          <span className="text-xs text-green-700">
-            {item.date}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-/* =========================
-   SMALL COMPONENT
-   ========================= */
-
-const StatusItem = ({ label, value }) => (
-  <div className="flex flex-col items-center">
-    <span className="text-lg font-semibold text-gray-700">
-      {value}
-    </span>
-    <span className="text-xs">{label}</span>
-  </div>
-);

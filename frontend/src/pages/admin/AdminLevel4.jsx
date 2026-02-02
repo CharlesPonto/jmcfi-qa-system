@@ -6,84 +6,88 @@ const AdminLevel4 = () => {
   const [activeTab, setActiveTab] = useState("guidelines");
   const [selectedMaterial, setSelectedMaterial] = useState(null);
 
-  /* =========================
-     LEVEL 4 MATERIALS
-     ========================= */
   const materials = [
     {
       id: 1,
-      title: "Level 4 Institutional Excellence Framework",
+      title: "Institutional Excellence Framework",
       description:
-        "Framework outlining institutional maturity, governance, sustainability, and continuous improvement for Level 4 accreditation.",
+        "Governance effectiveness and continuous improvement for Level 4.",
       date: "Jan 15, 2026",
-      files: [{ name: "Level4-Institutional-Framework.pdf", url: "#" }],
+      files: [{ name: "Level4-Framework.pdf", url: "#" }],
     },
     {
       id: 2,
-      title: "Quality Assurance & Continuous Improvement Manual",
+      title: "QA & Continuous Improvement Manual",
       description:
-        "Manual describing internal QA systems, monitoring, and feedback mechanisms.",
+        "Manual describing internal QA systems and feedback mechanisms.",
       date: "Jan 15, 2026",
-      files: [{ name: "QA-Continuous-Improvement.pdf", url: "#" }],
+      files: [{ name: "QA-Manual.pdf", url: "#" }],
     },
     {
       id: 3,
       title: "Benchmarking & Best Practices Guide",
-      description:
-        "Guide for benchmarking against national and international institutions.",
+      description: "Guide for national and international benchmarking.",
       date: "Jan 15, 2026",
-      files: [{ name: "Benchmarking-Best-Practices.pdf", url: "#" }],
+      files: [{ name: "Benchmarking-Guide.pdf", url: "#" }],
     },
   ];
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-slate-50 min-h-screen flex">
       <Sidebar />
 
-      <div className="ml-64 flex flex-col min-h-screen">
+      <div className="flex-1 ml-64 flex flex-col min-h-screen">
         <Topbar />
 
-        <main className="p-6 space-y-6 overflow-y-auto">
-          {/* HEADER */}
-          <div>
-            <h2 className="text-xl font-semibold text-[#6A003A]">
-              Level 4
-            </h2>
-            <p className="text-sm text-gray-500">
-              Institutional Excellence & Continuous Improvement
-            </p>
+        <main className="p-8 space-y-8 text-left animate-in fade-in duration-700">
+          {/* HEADER SECTION */}
+          <div className="flex justify-between items-start">
+            <div>
+              <h2 className="text-3xl font-extrabold text-gray-800 tracking-tight">
+                Level 4: Institutional Excellence
+              </h2>
+              <p className="text-sm text-gray-500 font-medium">
+                Governance, Global Competitiveness & Strategic Planning
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <span className="px-4 py-2 bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-sm">
+                Highest Tier
+              </span>
+            </div>
           </div>
 
-          {/* TABS */}
-          <div className="flex gap-8 border-b text-sm">
+          {/* PREMIUM TAB NAV */}
+          <div className="flex gap-1 bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100 w-fit">
             {["guidelines", "submissions", "complied"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`pb-2 capitalize ${
+                className={`px-10 py-2.5 rounded-xl text-xs font-bold transition-all ${
                   activeTab === tab
-                    ? "border-b-2 border-[#6A003A] text-[#6A003A] font-medium"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-[#6A003A] text-white shadow-lg shadow-magenta-100"
+                    : "text-gray-400 hover:text-gray-600 hover:bg-slate-50"
                 }`}
               >
-                {tab}
+                {tab.toUpperCase()}
               </button>
             ))}
           </div>
 
-          {/* CONTENT */}
-          {activeTab === "guidelines" && (
-            <Guidelines
-              materials={materials}
-              onSelect={setSelectedMaterial}
-            />
-          )}
-          {activeTab === "submissions" && <Submissions />}
-          {activeTab === "complied" && <Complied />}
+          {/* DYNAMIC CONTENT */}
+          <div className="mt-4">
+            {activeTab === "guidelines" && (
+              <Guidelines
+                materials={materials}
+                onSelect={setSelectedMaterial}
+              />
+            )}
+            {activeTab === "submissions" && <Submissions />}
+            {activeTab === "complied" && <Complied />}
+          </div>
         </main>
       </div>
 
-      {/* MATERIAL VIEWER */}
       {selectedMaterial && (
         <MaterialViewer
           material={selectedMaterial}
@@ -94,55 +98,74 @@ const AdminLevel4 = () => {
   );
 };
 
-export default AdminLevel4;
-
-/* =========================
-   GUIDELINES TAB (LEVEL 4)
-   ========================= */
-
+/* --- TAB 1: GUIDELINES --- */
 const Guidelines = ({ materials, onSelect }) => (
-  <div className="space-y-6">
-    {/* LEVEL BANNER */}
-    <div className="bg-[#6A003A] text-white rounded-xl p-6">
-      <h3 className="text-2xl font-semibold">LEVEL 4</h3>
-      <p className="text-sm mt-1">
-        Demonstrate institutional maturity, governance effectiveness, and continuous quality improvement.
-      </p>
-    </div>
-
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {/* FOCUS AREAS */}
-      <div className="bg-white rounded-xl shadow p-6">
-        <h4 className="font-semibold text-gray-700 mb-2">
-          Core Focus Areas
+  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    {/* CORE FOCUS AREAS CARD */}
+    <div className="lg:col-span-4 space-y-6">
+      <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-magenta-50/50 rounded-bl-full -mr-10 -mt-10" />
+        <h4 className="text-[10px] font-black text-[#6A003A] uppercase tracking-widest mb-6">
+          Strategic Pillars
         </h4>
-        <ul className="text-sm text-gray-500 list-disc list-inside space-y-1">
-          <li>Institutional Governance</li>
-          <li>Quality Assurance Systems</li>
-          <li>Sustainability & Strategic Planning</li>
-          <li>Benchmarking & Global Competitiveness</li>
-          <li>Continuous Improvement</li>
+        <ul className="space-y-4">
+          {[
+            "Institutional Governance",
+            "Global Benchmarking",
+            "QA System Maturity",
+            "Sustainability Framework",
+            "Strategic Innovation",
+          ].map((item, i) => (
+            <li
+              key={i}
+              className="flex items-center gap-3 text-xs font-bold text-gray-600"
+            >
+              <div className="w-1.5 h-1.5 rounded-full bg-[#6A003A]" />
+              {item}
+            </li>
+          ))}
         </ul>
       </div>
+    </div>
 
-      {/* MATERIALS */}
-      <div className="md:col-span-2 bg-white rounded-xl shadow p-6 space-y-4">
-        <h4 className="font-semibold text-gray-700">
-          Reference Materials
+    {/* REFERENCE MATERIALS */}
+    <div className="lg:col-span-8">
+      <div className="grid grid-cols-1 gap-4">
+        <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-4">
+          Master Documentation
         </h4>
-
         {materials.map((item) => (
           <button
             key={item.id}
             onClick={() => onSelect(item)}
-            className="w-full text-left bg-gray-100 rounded-lg p-4 hover:bg-gray-200 transition border-l-4 border-[#6A003A]"
+            className="group w-full bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm hover:border-[#6A003A] transition-all text-left flex items-center justify-between"
           >
-            <p className="text-sm font-medium text-gray-700">
-              Admin posted a material: {item.title}
-            </p>
-            <p className="text-xs text-gray-500">
-              {item.date}
-            </p>
+            <div className="flex items-center gap-6">
+              <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-gray-400 group-hover:bg-magenta-50 group-hover:text-[#6A003A] transition-colors">
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                  />
+                </svg>
+              </div>
+              <div>
+                <p className="text-sm font-bold text-gray-800">{item.title}</p>
+                <p className="text-[10px] font-medium text-gray-400 mt-1 uppercase tracking-tighter italic">
+                  Published: {item.date}
+                </p>
+              </div>
+            </div>
+            <div className="w-8 h-8 rounded-full border border-gray-100 flex items-center justify-center text-gray-300 group-hover:border-[#6A003A] group-hover:text-[#6A003A] transition-all">
+              →
+            </div>
           </button>
         ))}
       </div>
@@ -150,171 +173,172 @@ const Guidelines = ({ materials, onSelect }) => (
   </div>
 );
 
-/* =========================
-   MATERIAL VIEWER
-   ========================= */
-
-const MaterialViewer = ({ material, onClose }) => (
-  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-    <div className="bg-white rounded-xl shadow-lg w-full max-w-lg p-6 space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold text-gray-700">
-          {material.title}
-        </h3>
-        <button onClick={onClose} className="text-gray-500">
-          ✕
-        </button>
-      </div>
-
-      <p className="text-sm text-gray-600">
-        {material.description}
-      </p>
-
-      <ul className="space-y-2">
-        {material.files.map((file, index) => (
-          <li
-            key={index}
-            className="flex justify-between items-center border rounded-md p-3 text-sm"
-          >
-            <span>{file.name}</span>
-            <div className="flex gap-3">
-              <a href={file.url} className="text-[#6A003A] hover:underline">
-                View
-              </a>
-              <a href={file.url} download className="text-gray-600 hover:underline">
-                Download
-              </a>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </div>
-);
-
-/* =========================
-   SUBMISSIONS TAB
-   ========================= */
-
+/* --- TAB 2: SUBMISSIONS --- */
 const Submissions = () => {
   const submissions = [
     {
       id: 1,
-      title: "Institutional QA System Report.pdf",
+      title: "Institutional QA System Report",
       date: "Jan 20, 2026",
       status: "Pending",
     },
     {
       id: 2,
-      title: "Strategic Plan & Sustainability Report.pdf",
+      title: "Strategic Plan & Sustainability Report",
       date: "Jan 18, 2026",
       status: "Needs Revision",
     },
     {
       id: 3,
-      title: "Benchmarking & Internationalization Report.pdf",
+      title: "Benchmarking & Internationalization",
       date: "Jan 16, 2026",
       status: "Complied",
     },
   ];
 
-  const count = (status) =>
-    submissions.filter((s) => s.status === status).length;
-
   return (
-    <div className="bg-white rounded-xl shadow p-6 space-y-6">
-      {/* STATUS SUMMARY */}
-      <div className="flex gap-8 text-sm text-gray-600">
-        <StatusItem label="Submitted" value={submissions.length} />
-        <StatusItem label="Pending" value={count("Pending")} />
-        <StatusItem label="Needs Revision" value={count("Needs Revision")} />
-        <StatusItem label="Complied" value={count("Complied")} />
+    <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
+      <div className="p-8 border-b border-gray-50 flex justify-between items-center bg-slate-50/30">
+        <h4 className="font-bold text-gray-800">Portfolio Status</h4>
+        <div className="flex gap-6">
+          <StatusCount
+            label="Submissions"
+            val={submissions.length}
+            color="text-gray-800"
+          />
+          <StatusCount label="Complied" val={1} color="text-emerald-500" />
+        </div>
       </div>
-
-      {submissions.map((item) => (
-        <div
-          key={item.id}
-          className={`flex justify-between items-center bg-gray-50 border-l-4 rounded-lg px-4 py-3 ${
-            item.status === "Pending"
-              ? "border-yellow-400"
-              : item.status === "Needs Revision"
-              ? "border-orange-400"
-              : "border-green-500"
-          }`}
-        >
-          <div>
-            <p className="text-sm font-medium text-gray-700">
-              {item.title}
-            </p>
-            <p className="text-xs text-gray-500">
-              Last updated: {item.date}
-            </p>
-          </div>
-
-          <span
-            className={`px-3 py-1 rounded-full text-xs ${
-              item.status === "Pending"
-                ? "bg-yellow-100 text-yellow-700"
-                : item.status === "Needs Revision"
-                ? "bg-orange-100 text-orange-700"
-                : "bg-green-100 text-green-700"
-            }`}
+      <div className="divide-y divide-gray-50">
+        {submissions.map((item) => (
+          <div
+            key={item.id}
+            className="p-6 flex items-center justify-between hover:bg-slate-50/50 transition-colors"
           >
-            {item.status}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-/* =========================
-   COMPLIED TAB
-   ========================= */
-
-const Complied = () => {
-  const complied = [
-    {
-      id: 1,
-      title: "Approved Institutional Excellence Portfolio.pdf",
-      approvedBy: "QA Office",
-      date: "Jan 28, 2026",
-    },
-  ];
-
-  return (
-    <div className="bg-white rounded-xl shadow p-6 space-y-4">
-      {complied.map((item) => (
-        <div
-          key={item.id}
-          className="flex justify-between items-center bg-green-50 border-l-4 border-green-600 rounded-lg px-4 py-3"
-        >
-          <div>
-            <p className="text-sm font-medium text-gray-700">
-              {item.title}
-            </p>
-            <p className="text-xs text-gray-500">
-              Approved by {item.approvedBy}
-            </p>
+            <div className="flex items-center gap-4">
+              <div
+                className={`w-2 h-2 rounded-full ${item.status === "Complied" ? "bg-emerald-500" : item.status === "Pending" ? "bg-amber-400" : "bg-rose-500"}`}
+              />
+              <div>
+                <p className="text-sm font-bold text-gray-800">{item.title}</p>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">
+                  Updated: {item.date}
+                </p>
+              </div>
+            </div>
+            <span
+              className={`px-4 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${
+                item.status === "Complied"
+                  ? "bg-emerald-50 text-emerald-600 border-emerald-100"
+                  : item.status === "Pending"
+                    ? "bg-amber-50 text-amber-600 border-amber-100"
+                    : "bg-rose-50 text-rose-600 border-rose-100"
+              }`}
+            >
+              {item.status}
+            </span>
           </div>
-          <span className="text-xs text-green-700">
-            {item.date}
-          </span>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
 
-/* =========================
-   SMALL COMPONENT
-   ========================= */
-
-const StatusItem = ({ label, value }) => (
-  <div className="flex flex-col items-center">
-    <span className="text-lg font-semibold text-gray-700">
-      {value}
-    </span>
-    <span className="text-xs">{label}</span>
+/* --- TAB 3: COMPLIED --- */
+const Complied = () => (
+  <div className="bg-emerald-50/50 border border-emerald-100 rounded-[2.5rem] p-12 text-center">
+    <div className="w-20 h-20 bg-white rounded-[2rem] shadow-sm flex items-center justify-center text-emerald-500 mx-auto mb-6 border border-emerald-100">
+      <svg
+        className="w-10 h-10"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M5 13l4 4L19 7"
+        />
+      </svg>
+    </div>
+    <h3 className="text-2xl font-black text-emerald-900 tracking-tight">
+      Institutional Excellence Verified
+    </h3>
+    <p className="text-sm text-emerald-700/70 font-medium mt-2 max-w-md mx-auto">
+      The portfolio for Level 4 accreditation has been finalized and satisfies
+      all global benchmarking criteria.
+    </p>
+    <div className="mt-8 pt-8 border-t border-emerald-100 inline-block w-full max-w-xs">
+      <p className="text-[10px] font-black text-emerald-800 uppercase tracking-[0.2em]">
+        Verified by QA Office
+      </p>
+      <p className="text-[10px] font-bold text-emerald-600/60 mt-1">
+        Jan 28, 2026
+      </p>
+    </div>
   </div>
 );
+
+/* --- HELPERS --- */
+const StatusCount = ({ label, val, color }) => (
+  <div className="text-right">
+    <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
+      {label}
+    </p>
+    <p className={`text-xl font-black leading-none mt-1 ${color}`}>{val}</p>
+  </div>
+);
+
+const MaterialViewer = ({ material, onClose }) => (
+  <div className="fixed inset-0 bg-[#6A003A]/20 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+    <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-xl overflow-hidden animate-in zoom-in duration-300">
+      <div className="bg-[#6A003A] p-10 text-white relative">
+        <button
+          onClick={onClose}
+          className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors text-xl"
+        >
+          ✕
+        </button>
+        <h3 className="text-2xl font-bold">{material.title}</h3>
+        <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.2em] mt-2">
+          Institutional Resource
+        </p>
+      </div>
+      <div className="p-10 space-y-6 text-left">
+        <p className="text-sm text-gray-600 font-medium leading-relaxed italic border-l-4 border-slate-100 pl-4">
+          {material.description}
+        </p>
+        <div className="space-y-3">
+          {material.files.map((file, i) => (
+            <div
+              key={i}
+              className="flex justify-between items-center bg-slate-50 p-5 rounded-2xl border border-slate-100 group hover:border-[#6A003A] transition-all shadow-sm"
+            >
+              <span className="text-xs font-bold text-gray-700">
+                {file.name}
+              </span>
+              <div className="flex gap-6">
+                <a
+                  href={file.url}
+                  className="text-[10px] font-black text-[#6A003A] uppercase tracking-widest hover:underline"
+                >
+                  View File
+                </a>
+                <a
+                  href={file.url}
+                  download
+                  className="text-[10px] font-black text-gray-400 uppercase tracking-widest hover:underline"
+                >
+                  Download
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+export default AdminLevel4;

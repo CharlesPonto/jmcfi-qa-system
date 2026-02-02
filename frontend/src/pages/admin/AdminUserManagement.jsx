@@ -1,183 +1,114 @@
 import { useState } from "react";
 import Sidebar from "../../components/admin/Sidebar";
 import Topbar from "../../components/admin/Topbar";
+import UserModal from "../../components/admin/UserModal";
 
 const AdminUserManagement = () => {
-  /* =====================
-     MOCK USERS
-     ===================== */
   const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "Janette Claro",
-      email: "janette.claro@jmc.edu.ph",
-      role: "Dean",
-      department: "CITE",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Jerwin Carreon",
-      email: "jerwin.carreon@jmcfi.edu.ph",
-      role: "Dean",
-      department: "COBE",
-      status: "Active",
-    },
+    { id: 1, name: "Janette Claro", email: "janette.claro@jmc.edu.ph", role: "Dean", department: "CITE", status: "Active" },
+    { id: 2, name: "Jerwin Carreon", email: "jerwin.carreon@jmcfi.edu.ph", role: "Dean", department: "COBE", status: "Active" },
   ]);
 
-  /* =====================
-     MODAL STATE
-     ===================== */
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
 
-  /* =====================
-     FORM STATE
-     ===================== */
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    role: "Dean",
-    department: "",
-    status: "Active",
-  });
-
-  /* =====================
-     HANDLERS
-     ===================== */
-  const openAddModal = () => {
-    setEditingUser(null);
-    setFormData({
-      name: "",
-      email: "",
-      role: "Dean",
-      department: "",
-      status: "Active",
-    });
-    setIsModalOpen(true);
-  };
-
-  const openEditModal = (user) => {
-    setEditingUser(user);
-    setFormData(user);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => setIsModalOpen(false);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (editingUser) {
-      setUsers((prev) =>
-        prev.map((u) =>
-          u.id === editingUser.id ? { ...formData } : u
-        )
-      );
-    } else {
-      setUsers((prev) => [
-        ...prev,
-        { ...formData, id: Date.now() },
-      ]);
+  const handleDelete = (id) => {
+    if(window.confirm("Are you sure you want to disable this user?")) {
+      setUsers(users.map(u => u.id === id ? {...u, status: 'Inactive'} : u));
     }
+  };
 
-    closeModal();
+  const getRoleStyle = (role) => {
+    const roles = {
+      Dean: "bg-purple-50 text-purple-700 border-purple-100",
+      "Program Head": "bg-blue-50 text-blue-700 border-blue-100",
+      "Common User": "bg-slate-50 text-slate-600 border-slate-100",
+    };
+    return roles[role] || roles["Common User"];
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-slate-50 min-h-screen flex">
       <Sidebar />
-
-      <div className="ml-64 flex flex-col min-h-screen">
+      <div className="flex-1 ml-64 flex flex-col min-h-screen">
         <Topbar />
 
-        <main className="p-6 space-y-6 overflow-y-auto">
+        <main className="p-8 space-y-6">
           {/* HEADER */}
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h2 className="text-xl font-semibold text-[#6A003A]">
-                User Management
-              </h2>
-              <p className="text-sm text-gray-500">
-                Manage system users and roles
-              </p>
+              <h2 className="text-2xl font-bold text-gray-800">User Management</h2>
+              <p className="text-sm text-gray-500 font-medium">Configure access levels for University staff</p>
             </div>
-
             <button
-              onClick={openAddModal}
-              className="px-4 py-2 bg-[#6A003A] text-white rounded-lg hover:bg-[#8A1456] transition"
+              onClick={() => { setEditingUser(null); setIsModalOpen(true); }}
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#6A003A] text-white text-sm font-bold rounded-xl hover:bg-[#8A1456] transition-all shadow-lg shadow-magenta-200"
             >
-              Add User
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/></svg>
+              Add New User
             </button>
           </div>
 
-          {/* TABLE CARD */}
-          <div className="bg-white rounded-2xl shadow">
+          {/* TABLE CONTAINER */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="text-left text-gray-500 border-b">
-                    <th className="px-6 py-4">User</th>
-                    <th className="px-6 py-4">Role</th>
-                    <th className="px-6 py-4">Department</th>
-                    <th className="px-6 py-4">Status</th>
-                    <th className="px-6 py-4 text-right">Actions</th>
+                  <tr className="bg-gray-50/50 border-b border-gray-100">
+                    <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">User Profile</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Role</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Department</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-center">Status</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-right">Actions</th>
                   </tr>
                 </thead>
 
-                <tbody>
+                <tbody className="divide-y divide-gray-50">
                   {users.map((user) => (
-                    <tr
-                      key={user.id}
-                      className="border-b last:border-b-0 hover:bg-gray-50 transition"
-                    >
+                    <tr key={user.id} className="hover:bg-slate-50/50 transition-colors group">
                       <td className="px-6 py-4">
-                        <div>
-                          <p className="font-medium text-gray-700">
-                            {user.name}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            {user.email}
-                          </p>
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-magenta-50 border border-magenta-100 flex items-center justify-center text-[#6A003A] font-bold text-xs">
+                            {user.name.split(' ').map(n => n[0]).join('')}
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-gray-800">{user.name}</p>
+                            <p className="text-xs text-gray-400 font-medium">{user.email}</p>
+                          </div>
                         </div>
                       </td>
 
                       <td className="px-6 py-4">
-                        <span className="px-3 py-1 rounded-full text-xs bg-purple-100 text-purple-700">
+                        <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-tighter border ${getRoleStyle(user.role)}`}>
                           {user.role}
                         </span>
                       </td>
 
                       <td className="px-6 py-4">
-                        {user.department}
+                        <p className="text-sm font-semibold text-gray-600 tracking-tight">{user.department}</p>
                       </td>
 
-                      <td className="px-6 py-4">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs ${
-                            user.status === "Active"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-red-100 text-red-700"
-                          }`}
-                        >
+                      <td className="px-6 py-4 text-center">
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${user.status === "Active" ? "bg-emerald-50 text-emerald-600" : "bg-rose-50 text-rose-600"}`}>
                           {user.status}
                         </span>
                       </td>
 
-                      <td className="px-6 py-4 text-right space-x-4">
-                        <button
-                          onClick={() => openEditModal(user)}
-                          className="text-[#6A003A] hover:underline"
-                        >
-                          Edit
-                        </button>
-                        <button className="text-red-600 hover:underline">
-                          Disable
-                        </button>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex justify-end gap-2 opacity-100  transition-opacity">
+                          <button
+                            onClick={() => { setEditingUser(user); setIsModalOpen(true); }}
+                            className="p-2 text-gray-400 hover:text-[#6A003A] transition-colors"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                          </button>
+                          <button 
+                            onClick={() => handleDelete(user.id)}
+                            className="p-2 text-gray-400 hover:text-rose-600 transition-colors"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -188,84 +119,18 @@ const AdminUserManagement = () => {
         </main>
       </div>
 
-      {/* MODAL */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">
-              {editingUser ? "Edit User" : "Add User"}
-            </h3>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <input
-                type="text"
-                name="name"
-                placeholder="Full Name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full border rounded-lg px-4 py-2 text-sm"
-              />
-
-              <input
-                type="email"
-                name="email"
-                placeholder="Email Address"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full border rounded-lg px-4 py-2 text-sm"
-              />
-
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="w-full border rounded-lg px-4 py-2 text-sm"
-              >
-                <option>Dean</option>
-                <option>Program Head</option>
-                <option>Common User</option>
-              </select>
-
-              <input
-                type="text"
-                name="department"
-                placeholder="Department"
-                value={formData.department}
-                onChange={handleChange}
-                className="w-full border rounded-lg px-4 py-2 text-sm"
-              />
-
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="w-full border rounded-lg px-4 py-2 text-sm"
-              >
-                <option>Active</option>
-                <option>Inactive</option>
-              </select>
-
-              <div className="flex justify-end gap-3 pt-4">
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="px-4 py-2 text-sm text-gray-600 hover:underline"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-[#6A003A] text-white rounded-lg hover:bg-[#8A1456]"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      <UserModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        editingUser={editingUser}
+        onSave={(newUser) => {
+          if(editingUser) {
+            setUsers(users.map(u => u.id === editingUser.id ? newUser : u));
+          } else {
+            setUsers([...users, { ...newUser, id: Date.now() }]);
+          }
+        }}
+      />
     </div>
   );
 };
