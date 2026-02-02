@@ -1,75 +1,89 @@
 import { NavLink } from "react-router-dom";
 import logo from "../../assets/jmcfi-logo.png";
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
-    <aside className="fixed top-0 left-0 w-64 h-screen bg-[#6A003A] text-white flex flex-col z-50 shadow-2xl border-r border-white/5 font-sans antialiased">
-      {/* PREMIUM OVERLAY */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.05),transparent)] pointer-events-none" />
+    <>
+      {/* MOBILE OVERLAY - Only visible when sidebar is toggled on small screens */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 z-[60] lg:hidden backdrop-blur-sm transition-opacity"
+          onClick={toggleSidebar}
+        />
+      )}
 
-      {/* LOGO SECTION */}
-      <div className="relative flex flex-col items-center justify-center py-12 flex-shrink-0">
-        <div className="relative group">
-          <div className="absolute inset-0 bg-white/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <img 
-            src={logo} 
-            alt="JMCFI" 
-            className="relative w-20 h-20 object-contain drop-shadow-2xl transition-transform duration-300 group-hover:scale-105" 
-          />
-        </div>
-        {/* Improved Brand Font: Tracking and Weight */}
-        <h1 className="mt-5 text-[11px] font-bold tracking-[0.25em] uppercase text-white/70">
-          Jose Maria College
-        </h1>
-      </div>
+      <aside className={`fixed top-0 left-0 w-64 h-screen bg-[#6A003A] text-white flex flex-col z-[70] shadow-2xl border-r border-white/5 font-sans antialiased transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      }`}>
+        {/* PREMIUM OVERLAY */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.05),transparent)] pointer-events-none" />
 
-      {/* SCROLLABLE MENU */}
-      <nav className="relative flex-1 px-4 space-y-7 overflow-y-auto custom-scrollbar pb-10">
-        
-        {/* SECTION: MAIN */}
-        <div className="space-y-1.5">
-          <p className="px-4 text-[10px] font-semibold text-white/30 uppercase tracking-[0.2em] mb-3">
-            Navigation
-          </p>
-          <NavItem to="/admin/dashboard" label="Dashboard" icon="dashboard" />
-          <NavItem to="/admin/review-submissions" label="Review Documents" icon="review" />
-          <NavItem to="/admin/users" label="User Directory" icon="users" />
-        </div>
-
-        {/* SECTION: ACCREDITATION */}
-        <div className="space-y-1.5">
-          <p className="px-4 text-[10px] font-semibold text-white/30 uppercase tracking-[0.2em] mb-3">
-            Accreditation Levels
-          </p>
-          <div className="grid grid-cols-1 gap-1">
-            {[1, 2, 3, 4].map((num) => (
-              <NavItem key={num} to={`/admin/accreditation/level/${num}`} label={`Level ${num}`} icon="level" />
-            ))}
+        {/* LOGO SECTION */}
+        <div className="relative flex flex-col items-center justify-center py-10 lg:py-12 flex-shrink-0">
+          <div className="relative group">
+            <div className="absolute inset-0 bg-white/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <img 
+              src={logo} 
+              alt="JMCFI" 
+              className="relative w-16 lg:w-20 h-16 lg:h-20 object-contain drop-shadow-2xl transition-transform duration-300 group-hover:scale-105" 
+            />
           </div>
+          <h1 className="mt-5 text-[10px] lg:text-[11px] font-bold tracking-[0.25em] uppercase text-white/70">
+            Jose Maria College
+          </h1>
         </div>
 
-        {/* SECTION: ANALYTICS */}
-        <div className="space-y-1.5">
-          <p className="px-4 text-[10px] font-semibold text-white/30 uppercase tracking-[0.2em] mb-3">
-            Reports & Analytics
-          </p>
-          <NavItem to="/admin/external-review" label="External Audit" icon="external" />
-        </div>
-      </nav>
+        {/* SCROLLABLE MENU */}
+        <nav className="relative flex-1 px-4 space-y-7 overflow-y-auto custom-scrollbar pb-10">
+          
+          {/* SECTION: MAIN */}
+          <div className="space-y-1.5">
+            <p className="px-4 text-[10px] font-semibold text-white/30 uppercase tracking-[0.2em] mb-3">
+              Navigation
+            </p>
+            <NavItem to="/admin/dashboard" label="Dashboard" icon="dashboard" onClick={toggleSidebar} />
+            <NavItem to="/admin/review-submissions" label="Review Documents" icon="review" onClick={toggleSidebar} />
+            <NavItem to="/admin/users" label="User Directory" icon="users" onClick={toggleSidebar} />
+          </div>
 
-      {/* BOTTOM SECTION */}
-      <div className="relative px-4 py-6 mt-auto border-t border-white/10 bg-black/10 backdrop-blur-md">
-        <NavItem to="/admin/settings" label="System Settings" icon="settings" />
-      </div>
-    </aside>
+          {/* SECTION: ACCREDITATION */}
+          <div className="space-y-1.5">
+            <p className="px-4 text-[10px] font-semibold text-white/30 uppercase tracking-[0.2em] mb-3">
+              Accreditation Levels
+            </p>
+            <div className="grid grid-cols-1 gap-1">
+              {[1, 2, 3, 4].map((num) => (
+                <NavItem key={num} to={`/admin/accreditation/level/${num}`} label={`Level ${num}`} icon="level" onClick={toggleSidebar} />
+              ))}
+            </div>
+          </div>
+
+          {/* SECTION: ANALYTICS */}
+          <div className="space-y-1.5">
+            <p className="px-4 text-[10px] font-semibold text-white/30 uppercase tracking-[0.2em] mb-3">
+              Reports & Analytics
+            </p>
+            <NavItem to="/admin/external-review" label="External Audit" icon="external" onClick={toggleSidebar} />
+          </div>
+        </nav>
+
+        {/* BOTTOM SECTION */}
+        <div className="relative px-4 py-6 mt-auto border-t border-white/10 bg-black/10 backdrop-blur-md">
+          <NavItem to="/admin/settings" label="System Settings" icon="settings" onClick={toggleSidebar} />
+        </div>
+      </aside>
+    </>
   );
 };
 
 /* NAV ITEM COMPONENT */
-const NavItem = ({ to, label, icon }) => {
+const NavItem = ({ to, label, icon, onClick }) => {
   return (
     <NavLink
       to={to}
+      onClick={() => {
+        if (window.innerWidth < 1024) onClick(); // Close sidebar on mobile after click
+      }}
       className={({ isActive }) =>
         `group relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 active:scale-[0.97] ${
           isActive
@@ -82,14 +96,12 @@ const NavItem = ({ to, label, icon }) => {
         <>
           <div className="flex items-center gap-3 relative z-10">
             <Icon type={icon} isActive={isActive} />
-            {/* Primary Action Font: text-xs font-semibold */}
             <span className={`text-xs font-semibold tracking-wide transition-all duration-300 ${
               isActive ? "text-[#6A003A] translate-x-1" : "group-hover:text-white"
             }`}>
               {label}
             </span>
           </div>
-          
           {isActive && (
             <div className="absolute right-4 w-1.5 h-1.5 bg-[#6A003A] rounded-full animate-pulse" />
           )}
@@ -99,7 +111,6 @@ const NavItem = ({ to, label, icon }) => {
   );
 };
 
-/* ICONS (Keep as is, adjusted stroke for clarity) */
 const Icon = ({ type, isActive }) => {
   const iconBase = "w-5 h-5 transition-all duration-300";
   const color = isActive ? "text-[#6A003A]" : "text-white/30 group-hover:text-white group-hover:rotate-3";

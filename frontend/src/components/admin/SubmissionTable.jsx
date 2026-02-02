@@ -5,11 +5,20 @@ const SubmissionTable = () => {
   const navigate = useNavigate();
   const [statusFilter, setStatusFilter] = useState("All");
 
-  const submissions = [
-    { id: 1, department: "CITE", program: "BSIT", level: "Level 1", status: "Pending", date: "Nov 12, 2025" },
-    { id: 2, department: "COBE", program: "BSA", level: "Level 1", status: "Complied", date: "Nov 10, 2025" },
-    { id: 3, department: "CITE", program: "BSCS", level: "Level 2", status: "Non-Compliant", date: "Nov 8, 2025" },
-  ];
+ const submissions = [
+  { id: 1, department: "CITE", program: "BSIT", level: "Level 1", status: "Pending", date: "Nov 12, 2025" },
+  { id: 2, department: "COBE", program: "BSA", level: "Level 1", status: "Complied", date: "Nov 10, 2025" },
+  { id: 3, department: "CITE", program: "BSCS", level: "Level 2", status: "Non-Compliant", date: "Nov 8, 2025" },
+
+  { id: 4, department: "CITE", program: "BSCE", level: "Level 1", status: "Complied", date: "Nov 13, 2025" },
+  { id: 5, department: "COBE", program: "BSBA", level: "Level 2", status: "Pending", date: "Nov 11, 2025" },
+  { id: 6, department: "CAS", program: "BSPsych", level: "Level 1", status: "Pending", date: "Nov 9, 2025" },
+  { id: 7, department: "CRIM", program: "BSCRIM", level: "Level 3", status: "Complied", date: "Nov 14, 2025" },
+  { id: 8, department: "CITE", program: "BLIS", level: "Level 2", status: "For Revision", date: "Nov 7, 2025" },
+  { id: 9, department: "COBE", program: "BSEntrep", level: "Level 1", status: "Pending", date: "Nov 15, 2025" },
+  { id: 10, department: "CAS", program: "BAComm", level: "Level 3", status: "Non-Compliant", date: "Nov 6, 2025" }
+];
+
 
   const getStatusBadge = (status) => {
     // Matching the font-bold and uppercase style from ActivityLog's date
