@@ -9,71 +9,71 @@ const AdminUserManagement = () => {
   const [editingUser, setEditingUser] = useState(null);
 
   // YOUR DATA RETURNED & CLEANED
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "Janette Claro",
-      email: "janette.claro@jmc.edu.ph",
-      role: "Dean",
-      department: "CITE",
-      status: "Active",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    },
-    {
-      id: 2,
-      name: "Jerwin Carreon",
-      email: "jerwin.carreon@jmcfi.edu.ph",
-      role: "Dean",
-      department: "COBE",
-      status: "Active",
-      avatar: "https://randomuser.me/api/portraits/men/12.jpg",
-    },
-    {
-      id: 3,
-      name: "Bianca Leona MARIE Puno",
-      email: "bianca.puno@jmc.edu.ph",
-      role: "Student",
-      department: "CITE",
-      status: "Active",
-      avatar: "https://randomuser.me/api/portraits/women/46.jpg",
-    },
-    {
-      id: 4,
-      name: "Leo Manlangit",
-      email: "leo.manlangit@jmcfi.edu.ph",
-      role: "Common User",
-      department: "Finance",
-      status: "Inactive",
-      avatar: "https://randomuser.me/api/portraits/men/50.jpg",
-    },
-    {
-      id: 7,
-      name: "Dr. Helena Soriano",
-      email: "helena.soriano@jmc.edu.ph",
-      role: "Dean",
-      department: "CAS",
-      status: "Active",
-      avatar: "https://randomuser.me/api/portraits/women/45.jpg",
-    },
-    {
-      id: 8,
-      name: "Engr. Patrick Dizon",
-      email: "patrick.dizon@jmcfi.edu.ph",
-      role: "Dean",
-      department: "CCS",
-      status: "Active",
-      avatar: "https://randomuser.me/api/portraits/men/33.jpg",
-    },
-    {
-      id: 9,
-      name: "Bianca Leona Marie Puno",
-      email: "bianca.puno@jmc.edu.ph",
-      role: "Pet",
-      department: "CITE",
-      status: "Active",
-      avatar: null
-    },
-  ]);
+const [users, setUsers] = useState([
+  {
+    id: 1,
+    name: "Janette Claro",
+    email: "janette.claro@jmc.edu.ph",
+    role: "Dean",
+    department: "CITE",
+    status: "Active",
+    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+  },
+  {
+    id: 2,
+    name: "Jerwin Carreon",
+    email: "jerwin.carreon@jmcfi.edu.ph",
+    role: "Dean",
+    department: "COBE",
+    status: "Active",
+    avatar: "https://randomuser.me/api/portraits/men/12.jpg",
+  },
+  {
+    id: 3,
+    name: "Bianca Leona MARIE Puno",
+    email: "bianca.puno@jmc.edu.ph",
+    role: "Student",
+    department: "CITE",
+    status: "Active",
+    avatar: "https://randomuser.me/api/portraits/women/46.jpg",
+  },
+  {
+    id: 4,
+    name: "Charles Darwin Ponto",
+    email: "charles.ponto@jmc.edu.ph",
+    role: "User",
+    department: "CITE",
+    status: "Active",
+    avatar: "https://randomuser.me/api/portraits/men/16.jpg"
+  },
+  {
+    id: 7,
+    name: "Dr. Helena Soriano",
+    email: "helena.soriano@jmc.edu.ph",
+    role: "Dean",
+    department: "CAS",
+    status: "Active",
+    avatar: "https://randomuser.me/api/portraits/women/45.jpg",
+  },
+  {
+    id: 8,
+    name: "Engr. Patrick Dizon",
+    email: "patrick.dizon@jmcfi.edu.ph",
+    role: "Dean",
+    department: "CCS",
+    status: "Active",
+    avatar: "https://randomuser.me/api/portraits/men/33.jpg",
+  },
+  {
+    id: 9,
+    name: "Leo Manlangit",
+    email: "leo.manlangit@jmcfi.edu.ph",
+    role: "Common User",
+    department: "Finance",
+    status: "Inactive",
+    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+  },
+]);
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
