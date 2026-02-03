@@ -103,10 +103,10 @@ const AdminUserManagement = () => {
           {/* HEADER SECTION */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 className="text-xl md:text-2xl font-extrabold text-gray-800 tracking-tight">
+              <h2 className="text-2xl md:text-3xl font-extrabold text-gray-800 tracking-tight  ">
                 User Management
               </h2>
-              <p className="text-xs text-gray-500 font-medium">
+              <p className="text-xs md:text-sm text-gray-500 font-medium tracking-tight">
                 Configure access levels for University staff
               </p>
             </div>

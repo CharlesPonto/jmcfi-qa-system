@@ -55,7 +55,7 @@ const AdminReviewSubmissions = () => {
           {/* HEADER SECTION - Stack on mobile, row on MD */}
           <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 tracking-tight">Review Submissions</h2>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-gray-800 tracking-tight">Review Submissions</h2>
               <p className="text-sm text-gray-500 font-medium">Manage and validate accreditation requirements</p>
             </div>
             

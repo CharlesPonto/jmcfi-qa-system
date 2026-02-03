@@ -48,7 +48,7 @@ const AdminDashboard = () => {
           {/* HEADER SECTION */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h2 className="text-xl md:text-2xl font-bold text-gray-800 tracking-tight">System Dashboard</h2>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-gray-800 tracking-tight">System Dashboard</h2>
               <p className="text-xs md:text-sm text-gray-500 font-medium tracking-tight">Real-time accreditation tracking and system analytics</p>
             </div>
             <button
