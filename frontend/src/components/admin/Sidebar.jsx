@@ -49,7 +49,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <div className="space-y-1">
             <p className="px-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.25em] mb-3">Accreditation</p>
             {[1, 2, 3, 4].map((num) => (
-              <NavItem key={num} to={`/admin/accreditation/level/${num}`} label={`Level ${num} Status`} icon="level" onClick={toggleSidebar} />
+              <NavItem key={num} to={`/admin/accreditation/level/${num}`} label={`Level ${num} `} icon="level" onClick={toggleSidebar} />
             ))}
           </div>
 
