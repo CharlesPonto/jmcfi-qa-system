@@ -71,7 +71,7 @@ const AdminLevel3 = () => {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.167a2.405 2.405 0 010-1.574l2.147-6.167a1.76 1.76 0 013.417.592zM15.817 3.427a1.76 1.76 0 00-3.23.174 19.708 19.708 0 000 16.798 1.76 1.76 0 003.23.174 20.314 20.314 0 000-17.146z"/>
               </svg>
-              Add L3 Announcement
+              Add Announcement
             </button>
 
             <button
@@ -81,7 +81,7 @@ const AdminLevel3 = () => {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
               </svg>
-              Create L3 Task
+              Create Task
             </button>
           </div>
 
@@ -108,7 +108,7 @@ const AdminLevel3 = () => {
                     </svg>
                   </div>
                   <h3 className="text-lg md:text-xl font-black text-gray-800 tracking-tight">
-                    {modalType === "task" ? "Create L3 Task" : "L3 Announcement"}
+                    {modalType === "task" ? "Create Task" : "L3 Announcement"}
                   </h3>
                 </div>
                 <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-slate-50 rounded-full transition-colors text-gray-400">
@@ -133,7 +133,7 @@ const AdminLevel3 = () => {
                   <div className="flex-1">
                     <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 ml-1">Recipient Program</label>
                     <select className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-xs font-bold text-gray-700 outline-none appearance-none">
-                      <option>All L3 Programs</option>
+                      <option>All Programs</option>
                       <option>BSIT</option>
                       <option>BSBA</option>
                     </select>
