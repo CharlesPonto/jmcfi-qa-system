@@ -8,16 +8,40 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setError("");
+  const handleLogin = async (e) => {
+  e.preventDefault();
+  setError("");
 
-    if (email === "admin" && password === "admin123") {
-      navigate("/admin/dashboard");
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.message || "Invalid login credentials.");
       return;
     }
-    setError("Invalid administrator credentials.");
-  };
+
+    // OPTIONAL: save token to localStorage
+    // localStorage.setItem("token", data.token);
+
+    // ROLE-BASED REDIRECT (important)
+    if (data.role === "admin") {
+      navigate("/admin/dashboard");
+    } else if (data.role === "dean") {
+      navigate("/dean/dashboard");
+    } else {
+      navigate("/user/dashboard");
+    }
+
+  } catch (err) {
+    setError("Server error. Cannot connect to backend.");
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f8f9fa] relative overflow-hidden px-4 antialiased">
