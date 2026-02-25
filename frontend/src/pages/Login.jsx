@@ -55,7 +55,7 @@ const Login = () => {
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
               <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">
-                Admin Username
+                Username
               </label>
               <input
                 type="text"
