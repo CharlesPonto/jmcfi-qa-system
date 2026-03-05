@@ -1,193 +1,142 @@
 import { useState } from "react";
 import Sidebar from "../../components/admin/Sidebar";
 import Topbar from "../../components/admin/Topbar";
-import Guidelines from "../../components/admin/Guidelines";
-import Submissions from "../../components/admin/Submissions";
-import Complied from "../../components/admin/Complied";
-import MaterialViewer from "../../components/admin/MaterialViewer";
+import { useNavigate } from "react-router-dom";
+import AreaComplianceTable from "./AreaComplianceTable"; // Import the new file
 
 const AdminLevel1 = () => {
-  const [activeTab, setActiveTab] = useState("guidelines");
-  const [selectedMaterial, setSelectedMaterial] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile sidebar state
-
-  // MODAL STATES
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState("announcement");
-
+  const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedArea, setSelectedArea] = useState(null); // Track which area is open
+  
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-  const materials = [
-    { id: 1, title: "Self-Assessment Guidelines", description: "Review before submitting your SAR.", date: "Nov 7", files: [{ name: "Level1-Guidelines.pdf", url: "#" }] },
-    { id: 2, title: "Compliance Report Template", description: "Use this template for reports.", date: "Nov 7", files: [{ name: "Compliance-Template.docx", url: "#" }] },
-  ];
-
-  const openModal = (type) => {
-    setModalType(type);
-    setIsModalOpen(true);
+  // Mapping the data you provided
+  const areaRequirements = {
+    1: [
+      { id: "1.1.1", subArea: "JMCFI Philosophy, Vision, Mission, and Goals", evidence: "Official PVMG Documents" },
+      { id: "1.1.2", subArea: "Articles of Incorporation/SEC Registration", evidence: "Certified True Copy of SEC" },
+      { id: "1.1.3", subArea: "JMCFI Core Values", evidence: "Institutional Core Values Booklet" },
+      { id: "1.1.4", subArea: "JMCFI Roadmap", evidence: "Strategic Roadmap 2024-2030" },
+      { id: "1.1.5", subArea: "JMCFI Institutional Quality Framework", evidence: "ISO or Quality Manual" },
+    ],
+    // Other areas can be added here following the same format
   };
 
+  const areas = [
+    { id: 1, title: "Area I", name: "Philosophy and Objectives", progress: 100, status: "Complied" },
+    { id: 2, title: "Area II", name: "Faculty", progress: 85, status: "Ongoing" },
+    { id: 3, title: "Area III", name: "Instruction", progress: 92, status: "Ongoing" },
+    { id: 4, title: "Area IV", name: "Library", progress: 100, status: "Complied" },
+    { id: 5, title: "Area V", name: "Laboratories", progress: 45, status: "Critical" },
+    { id: 6, title: "Area VI", name: "Physical Plant & Facilities", progress: 75, status: "Ongoing" },
+    { id: 7, title: "Area VII", name: "Student Personnel Services", progress: 88, status: "Ongoing" },
+    { id: 8, title: "Area VIII", name: "Social Orientation & Involvement", progress: 40, status: "Critical" },
+    { id: 9, title: "Area IX", name: "Organization and Administration", progress: 95, status: "Ongoing" },
+    { id: 10, title: "Area X", name: "Research", progress: 30, status: "Critical" },
+    { id: 11, title: "Area XI", name: "Other Resources", progress: 100, status: "Complied" },
+  ];
+
   return (
-    <div className="bg-slate-50 min-h-screen flex font-sans antialiased text-left overflow-x-hidden">
-      {/* SIDEBAR - Responsive Logic */}
+    <div className="bg-[#F4F7FE] min-h-screen flex font-sans antialiased text-left">
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
       <div className="flex-1 lg:ml-64 flex flex-col min-h-screen w-full transition-all duration-300">
         <Topbar toggleSidebar={toggleSidebar} />
 
-        <main className="p-4 md:p-8 space-y-6 md:space-y-8">
-          
-          {/* HEADER & TAB NAVIGATION */}
-          <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6">
+        <main className="w-full p-6 md:p-8 space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
             <div>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-gray-800 tracking-tight">Level 1</h2>
-              <p className="text-xs md:text-sm text-gray-500 font-medium">Initial Accreditation Requirements</p>
+              <h1 className="text-2xl font-black text-slate-800">PACUCOA Level 1</h1>
+              <p className="text-sm font-semibold text-slate-400 uppercase tracking-widest mt-1">Institutional Compliance Dashboard</p>
             </div>
-            
-            {/* TABS - Horizontal Scroll on Mobile */}
-            <div className="w-full xl:w-auto flex bg-white p-1 rounded-2xl shadow-sm border border-gray-100 overflow-x-auto no-scrollbar">
-              {["guidelines", "submissions", "complied"].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`flex-1 xl:flex-none px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
-                    activeTab === tab
-                      ? "bg-[#6A003A] text-white shadow-lg shadow-[#6A003A]/20"
-                      : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
-                  }`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* ACTION BUTTONS - Responsive Stacking */}
-          <div className="flex flex-col sm:flex-row items-center gap-3">
-            <button
-              onClick={() => openModal("announcement")}
-              className="text-sm font-semibold w-full sm:w-auto px-6 py-3 bg-white border border-gray-200 text-[#6A003A] rounded-xl hover:bg-gray-50 shadow-sm flex items-center justify-center gap-2 transition-all active:scale-95"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.167a2.405 2.405 0 010-1.574l2.147-6.167a1.76 1.76 0 013.417.592zM15.817 3.427a1.76 1.76 0 00-3.23.174 19.708 19.708 0 000 16.798 1.76 1.76 0 003.23.174 20.314 20.314 0 000-17.146z"/>
-              </svg>
-              Add Announcement
-            </button>
-
-            <button
-              onClick={() => openModal("task")}
-              className="text-sm font-semibold w-full sm:w-auto px-6 py-3 bg-[#6A003A] text-white rounded-xl hover:bg-[#4a0028] shadow-lg shadow-[#6A003A]/20 flex items-center justify-center gap-2 transition-all active:scale-95"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
-              </svg>
-              Create New Task
+            <button className="text-sm font-bold bg-[#6A003A] text-white px-6 py-3 rounded-xl hover:shadow-lg transition-all">
+              Download Full Report
             </button>
           </div>
 
-          {/* TAB CONTENT */}
-          <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-            {activeTab === "guidelines" && <Guidelines materials={materials} onSelect={setSelectedMaterial} />}
-            {activeTab === "submissions" && <Submissions />}
-            {activeTab === "complied" && <Complied />}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <StatBox label="Completion" value="78.4%" color="text-[#6A003A]" />
+            <StatBox label="Complied" value="03" color="text-emerald-600" />
+            <StatBox label="Ongoing" value="05" color="text-amber-500" />
+            <StatBox label="Critical" value="03" color="text-rose-500" />
           </div>
+
+          <div className="space-y-3">
+             <div className="flex items-center gap-4 px-2">
+                <span className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Select an Area to View Details</span>
+                <div className="h-px flex-1 bg-slate-200"></div>
+             </div>
+
+             <div className="grid grid-cols-1 gap-3">
+                {areas.map((area) => (
+                  <AreaRow 
+                    key={area.id} 
+                    area={area} 
+                    onClick={() => navigate(`/admin/level-1/area/${area.id}`)}
+                    isActive={selectedArea?.id === area.id}
+                  />
+                ))}
+             </div>
+          </div>
+
+          {/* This part shows the table only when an area is clicked */}
+          {selectedArea && (
+            <AreaComplianceTable 
+              area={selectedArea} 
+              data={areaRequirements[selectedArea.id] || []} 
+            />
+          )}
         </main>
       </div>
+    </div>
+  );
+};
 
-      {/* MODAL COMPONENT - Fully Responsive */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-end sm:items-center justify-center z-[100] p-0 sm:p-4">
-          <div className="bg-white rounded-t-[2.5rem] sm:rounded-[2rem] shadow-2xl w-full max-w-2xl animate-in slide-in-from-bottom sm:zoom-in-95 duration-300 overflow-hidden">
-            <div className="p-6 md:p-8 space-y-6">
-              
-              {/* MODAL HEADER */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-[#6A003A]">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                    </svg>
-                  </div>
-                  <h3 className="text-lg md:text-xl font-black text-gray-800 tracking-tight">
-                    {modalType === "task" ? "Create New Task" : "Add Announcement"}
-                  </h3>
-                </div>
-                <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-slate-50 rounded-full transition-colors text-gray-400">
-                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-              </div>
+const StatBox = ({ label, value, color }) => (
+  <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+    <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">{label}</p>
+    <p className={`text-2xl font-black ${color}`}>{value}</p>
+  </div>
+);
 
-              {/* INPUT AREA */}
-              <div className="space-y-4">
-                <div className="bg-slate-50 rounded-[1.5rem] p-5 border-2 border-transparent focus-within:border-[#6A003A]/20 transition-all shadow-inner">
-                  <input 
-                    type="text"
-                    placeholder={modalType === "task" ? "Assignment Title" : "Announcement subject..."}
-                    className="w-full bg-transparent text-sm font-bold text-gray-800 placeholder:text-gray-300 outline-none mb-3"
-                  />
-                  <textarea 
-                    placeholder="Provide details or instructions..."
-                    className="w-full bg-transparent text-xs font-medium text-gray-500 outline-none resize-none h-32 md:h-40 leading-relaxed"
-                  />
-                  
-                  {/* RICH TEXT BAR */}
-                  <div className="flex gap-5 pt-4 border-t border-gray-200 mt-2 text-gray-400">
-                    <button className="text-xs hover:text-[#6A003A] font-black tracking-tighter">BOLD</button>
-                    <button className="text-xs hover:text-[#6A003A] font-black italic tracking-tighter">ITALIC</button>
-                    <button className="text-xs hover:text-[#6A003A] font-black underline tracking-tighter">LINK</button>
-                  </div>
-                </div>
+const AreaRow = ({ area, onClick, isActive }) => {
+  const isCritical = area.status === "Critical";
+  const isComplied = area.status === "Complied";
 
-                <div className="flex flex-col md:flex-row gap-4">
-                  <div className="flex-1">
-                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 ml-1">Recipient Program</label>
-                    <select className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-xs font-bold text-gray-700 outline-none focus:ring-2 focus:ring-[#6A003A]/5 appearance-none">
-                      <option>All Programs</option>
-                      <option>BS Information Technology</option>
-                      <option>BS Computer Engineering</option>
-                    </select>
-                  </div>
-                  {modalType === "task" && (
-                    <div className="flex-1">
-                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 ml-1">Due Date</label>
-                      <input type="date" className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-xs font-bold text-gray-700 outline-none focus:ring-2 focus:ring-[#6A003A]/5" />
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* MODAL FOOTER - Action Buttons */}
-              <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-6 pt-4">
-                <div className="flex w-full md:w-auto gap-2">
-                  <button title="Attach" className="flex-1 md:flex-none p-3.5 rounded-xl border border-gray-100 text-gray-400 hover:text-[#6A003A] hover:bg-rose-50 transition-all flex justify-center">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
-                  </button>
-                  <button title="Link" className="flex-1 md:flex-none p-3.5 rounded-xl border border-gray-100 text-gray-400 hover:text-[#6A003A] hover:bg-rose-50 transition-all flex justify-center">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-                  </button>
-                </div>
-                
-                <div className="flex w-full md:w-auto items-center gap-6">
-                  <button 
-                    onClick={() => setIsModalOpen(false)}
-                    className="flex-1 md:flex-none text-[11px] font-black text-gray-400 hover:text-gray-600 uppercase tracking-widest"
-                  >
-                    Discard
-                  </button>
-                  <button className="flex-[2] md:flex-none px-10 py-4 bg-[#6A003A] text-white text-[10px] font-black rounded-2xl shadow-xl shadow-[#6A003A]/30 hover:bg-[#4a0028] transition-all uppercase tracking-[0.2em]">
-                    {modalType === "task" ? "Assign Task" : "Post Now"}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+  return (
+    <div 
+      onClick={onClick}
+      className={`cursor-pointer bg-white border ${isActive ? 'border-[#6A003A] ring-1 ring-[#6A003A]' : 'border-slate-100'} hover:border-[#6A003A]/30 p-4 md:p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all group shadow-sm`}
+    >
+      <div className="flex items-center gap-5 flex-1">
+        <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-sm font-black shrink-0 ${
+          isComplied ? 'bg-emerald-50 text-emerald-600' : 
+          isCritical ? 'bg-rose-50 text-rose-600' : 'bg-slate-50 text-[#6A003A]'
+        }`}>
+          {area.title.split(' ')[1]}
         </div>
-      )}
+        <div>
+           <h4 className="text-[17px] font-bold text-slate-800 group-hover:text-[#6A003A] transition-colors">{area.name}</h4>
+           <span className={`text-[10px] font-black uppercase tracking-widest ${
+              isComplied ? 'text-emerald-500' : isCritical ? 'text-rose-500' : 'text-amber-500'
+           }`}>{area.status}</span>
+        </div>
+      </div>
 
-      {/* MATERIAL VIEWER */}
-      {selectedMaterial && (
-        <MaterialViewer material={selectedMaterial} onClose={() => setSelectedMaterial(null)} />
-      )}
+      <div className="flex items-center gap-10">
+        <div className="flex flex-col items-end gap-1.5">
+           <span className="text-lg font-black text-slate-800">{area.progress}%</span>
+           <div className="w-48 h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div className={`h-full ${isComplied ? 'bg-emerald-500' : isCritical ? 'bg-rose-500' : 'bg-[#6A003A]'}`} style={{ width: `${area.progress}%` }} />
+           </div>
+        </div>
+        <div className={`p-2.5 rounded-xl transition-all ${isActive ? 'bg-[#6A003A] text-white' : 'bg-slate-50 text-slate-300'}`}>
+           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"/>
+           </svg>
+        </div>
+      </div>
     </div>
   );
 };

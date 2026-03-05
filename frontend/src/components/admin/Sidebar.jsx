@@ -1,7 +1,19 @@
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import logo from "../../assets/jmcfi-logo.png";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
+  const location = useLocation();
+  
+  // Logic to keep PACUCOA open if the current path includes 'accreditation'
+  const isPacucoaPath = location.pathname.includes("accreditation");
+  const [isPacucoaOpen, setIsPacucoaOpen] = useState(isPacucoaPath);
+
+  // Sync the open state whenever the URL changes
+  useEffect(() => {
+    if (isPacucoaPath) setIsPacucoaOpen(true);
+  }, [isPacucoaPath]);
+
   return (
     <>
       {/* MOBILE OVERLAY */}
@@ -17,7 +29,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}>
         
-        {/* LOGO SECTION - VERTICALLY CENTERED */}
+        {/* LOGO SECTION */}
         <div className="relative px-7 pt-12 pb-10 flex-shrink-0">
           <div className="flex items-center gap-3 h-12">
             <div className="w-12 h-12 bg-white rounded-2xl p-2 shadow-lg flex items-center justify-center flex-shrink-0">
@@ -46,11 +58,55 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <NavItem to="/admin/users" label="User Management" icon="users" onClick={toggleSidebar} />
           </div>
 
+          {/* ACCREDITATION SECTION */}
           <div className="space-y-1">
             <p className="px-4 text-[10px] font-bold text-white/20 uppercase tracking-[0.25em] mb-3">Accreditation</p>
-            {[1, 2, 3, 4].map((num) => (
-              <NavItem key={num} to={`/admin/accreditation/level/${num}`} label={`Level ${num} `} icon="level" onClick={toggleSidebar} />
-            ))}
+            
+            {/* PACUCOA PARENT TOGGLE */}
+            <button 
+              onClick={() => setIsPacucoaOpen(!isPacucoaOpen)}
+              className={`w-full group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                isPacucoaPath || isPacucoaOpen ? "text-white bg-white/5" : "text-white/50 hover:bg-white/5 hover:text-white"
+              }`}
+            >
+              {/* Icon turns white and high-opacity when active or open */}
+              <Icon type="level" isActive={isPacucoaPath || isPacucoaOpen} isDropdownParent={true} />
+              <span className="text-sm font-semibold tracking-tight">PACUCOA</span>
+              <svg 
+                className={`ml-auto w-3.5 h-3.5 transition-transform duration-300 ${isPacucoaOpen ? 'rotate-180' : ''} ${
+                  isPacucoaPath ? "text-white" : "text-white/20 group-hover:text-white"
+                }`} 
+                fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {/* COLLAPSIBLE LEVELS */}
+            <div 
+              className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                isPacucoaOpen ? 'max-h-64 opacity-100 mt-1' : 'max-h-0 opacity-0'
+              }`}
+            >
+              <div className="ml-9 border-l border-white/10">
+                {[1, 2, 3, 4].map((num) => (
+                  <NavLink
+                    key={num}
+                    to={`/admin/accreditation/level/${num}`}
+                    onClick={() => window.innerWidth < 1024 && toggleSidebar()}
+                    className={({ isActive }) =>
+                      `block py-2.5 px-4 text-xs font-semibold transition-all translate-x-0 hover:translate-x-1 ${
+                        isActive 
+                        ? "text-white border-l-2 border-white -ml-px bg-white/10" 
+                        : "text-white/40 hover:text-white"
+                      }`
+                    }
+                  >
+                    Level {num}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="space-y-1">
@@ -80,7 +136,7 @@ const NavItem = ({ to, label, icon, onClick }) => {
     >
       {({ isActive }) => (
         <>
-          <Icon type={icon} isActive={isActive} />
+          <Icon type={icon} isActive={isActive} isDropdownParent={false} />
           <span className={`text-sm font-semibold tracking-tight ${isActive ? "text-[#6A003A]" : "group-hover:text-white"}`}>
             {label}
           </span>
@@ -91,8 +147,14 @@ const NavItem = ({ to, label, icon, onClick }) => {
   );
 };
 
-const Icon = ({ type, isActive }) => {
-  const color = isActive ? "text-[#6A003A]" : "text-white/20 group-hover:text-white/80";
+const Icon = ({ type, isActive, isDropdownParent }) => {
+  // Logic to handle icon colors based on if it's a primary NavItem (white bg) or PACUCOA (maroon bg)
+  let colorClass = "text-white/20 group-hover:text-white/80";
+  
+  if (isActive) {
+    colorClass = isDropdownParent ? "text-white opacity-100" : "text-[#6A003A]";
+  }
+
   const paths = {
     dashboard: "M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z",
     review: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
@@ -104,7 +166,7 @@ const Icon = ({ type, isActive }) => {
   };
 
   return (
-    <svg className={`w-5 h-5 flex-shrink-0 transition-colors ${color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className={`w-5 h-5 flex-shrink-0 transition-all duration-200 ${colorClass}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={paths[type]} />
     </svg>
   );

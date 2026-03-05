@@ -11,6 +11,7 @@ import AdminLevel3 from "./pages/admin/AdminLevel3";
 import AdminLevel4 from "./pages/admin/AdminLevel4";
 import AdminSettings from "./pages/admin/AdminSettings";
 import SubmissionTimeline from "./pages/admin/SubmissionTimeline";
+import AreaDetailsPage from "./pages/admin/AreaDetailsPage"; // Check this path!
 
 // Dashboards
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -62,6 +63,7 @@ function App() {
         />
 
         <Route path="/admin/accreditation/level/2" element={<AdminLevel2 />} />
+        <Route path="/admin/level-1/area/:id" element={<AreaDetailsPage />} />
 
         <Route path="/admin/accreditation/level/3" element={<AdminLevel3 />} />
         <Route path="/admin/accreditation/level/4" element={<AdminLevel4 />} />
